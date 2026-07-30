@@ -240,7 +240,6 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Dark mode">
   <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"></svg>
 </button>
-    <button class="theme-toggle" onclick="toggleLang()" title="Switch language" style="font-size:11px;font-weight:800;">EN</button>
     <div class="live-pill"><div class="live-dot"></div>LIVE</div>
     <span style="font-size:11px;color:var(--text3);font-family:var(--mono)" id="hdr-date"></span>
   </div>
@@ -362,60 +361,176 @@ let currentSym = null;
 let catFilter = 'all';
 let profileCache = {}; // { [sym]: profile json } — 162 хувьцааны data/profiles/{sym}.json
 let currentView = 'tojim';
-// ═══ i18n — Хэлний сонголт ═══
+
+// ═══════════════════════════════════════════
+// i18n — Хэлний сонголт (mn / en)
+// ═══════════════════════════════════════════
 let currentLang = localStorage.getItem('mp_lang') || 'mn';
 
 const UI_TEXT = {
   mn: {
-    searchPh: 'Хайх... APU, KHAN...', all:'Бүгд', catI:'I анги', catII:'II анги', catIII:'III анги',
-    selectCo:'Компани сонгоно уу', tabTojim:'Тойм', tabGeneral:'Ерөнхий мэдээлэл',
-    tabFin:'Санхүүгийн мэдээлэл', tabTrade:'Арилжааны түүх', tabOwn:'Хувьцаа эзэмшил',
+    stocksTitle:'Хувьцаа', searchPh:'Хайх... APU, KHAN...',
+    all:'Бүгд', catI:'I анги', catII:'II анги', catIII:'III анги',
+    selectCo:'Компани сонгоно уу', notFound:'Олдсонгүй',
+    tabTojim:'Тойм', tabGeneral:'Ерөнхий мэдээлэл', tabFin:'Санхүүгийн мэдээлэл',
+    tabTrade:'Арилжааны түүх', tabOwn:'Хувьцаа эзэмшил',
     prevClose:'Өмнөх Хаалт', openClose:'Нээлт / Хаалт', highLow:'Дээд / Доод',
     volTrades:'Эзлэхүүн / Хэлцэл', trades:'хэлцэл', shares:'ширхэг',
     startDate:'Эхлэх огноо', endDate:'Дуусах огноо', filter:'Шүүх', allBtn:'Бүгд',
-    tradedHistory:'Арилжигдсан түүх', tradingDays:'арилжааны өдөр',
-    noData:'Өгөгдөл байхгүй байна', noInfo:'Одоогоор мэдээлэл байхгүй байна',
-    balanceSheet:'Балансын тайлан', incomeStatement:'Орлогын тайлан',
+    tradedHistory:'Арилжигдсан түүх', num:'№', date:'Огноо', open:'Нээлт', close:'Хаалт',
+    highLowCol:'Дээд / Доод', volume:'Эзлэхүүн', turnover:'Үнийн дүн', tradesCol:'Хэлцэл',
+    tradingDays:'арилжааны өдөр', noDataShort:'Өгөгдөл байхгүй',
+    noData:'Өгөгдөл байхгүй байна', noDataRange:'Сонгосон хугацаанд өгөгдөл алга',
+    noInfo:'Одоогоор мэдээлэл байхгүй байна', profileNotFound:'Профайл олдсонгүй',
+    industry:'Ангилал', mse:'МХБ',
+    ownStructure:'Эзэмшлийн бүтэц', influentialOwners:'Нөлөө бүхий эзэмшигчид',
+    topOwner:'Хамгийн том эзэмшигч', boardMembers:'ТУЗ-ийн гишүүд',
+    execMgmt:'Гүйцэтгэх удирдлага', smallOwners:'Жижиг хувьцаа эзэмшигчид',
+    ownersTitle:'Нөлөө бүхий хувьцаа эзэмшигчид', name:'Нэр', pct:'Хувь', count:'Ширхэг',
+    viewHistory:'Түүхэн өөрчлөлт харах', record:'бичлэг', noInfoAvail:'Мэдээлэл байхгүй',
+    report:'Тайлан', balanceSheet:'Балансын тайлан', incomeStatement:'Орлогын тайлан',
     cashFlow:'Мөнгөн гүйлгээ', equityChanges:'Өмчийн өөрчлөлт',
-    noFinData:'Санхүүгийн тайлан одоогоор байхгүй байна',
+    totalAssets:'Нийт хөрөнгө', totalLiab:'Өр төлбөр', equity:'Эздийн өмч', netIncome:'Цэвэр ашиг',
+    revenueChart:'Борлуулалтын орлого', niChart:'Цэвэр ашиг',
+    noFinData:'Санхүүгийн тайлан одоогоор байхгүй байна', noStatementData:'Энэ тайлан хугацаанд байхгүй байна',
+    code:'Код', indicator:'Үзүүлэлт', openingBal:'Эхний үлдэгдэл', closingBal:'Эцсийн үлдэгдэл',
+    createdDate:'Үүсгэн байгуулсан', listedDate:'МХБ-д бүртгүүлсэн', ceo:'Гүйцэтгэх захирал',
+    employees:'Нийт ажилчдын тоо', phoneFax:'Утас, Факс', email:'И-мэйл', website:'Веб сайт',
+    address:'Байршил хаяг', regNum:'Улсын бүртгэл', certNum:'Гэрчилгээ',
   },
   en: {
-    searchPh: 'Search... APU, KHAN...', all:'All', catI:'Class I', catII:'Class II', catIII:'Class III',
-    selectCo:'Select a company', tabTojim:'Overview', tabGeneral:'General Info',
-    tabFin:'Financials', tabTrade:'Trade History', tabOwn:'Ownership',
+    stocksTitle:'Stocks', searchPh:'Search... APU, KHAN...',
+    all:'All', catI:'Class I', catII:'Class II', catIII:'Class III',
+    selectCo:'Select a company', notFound:'No results',
+    tabTojim:'Overview', tabGeneral:'General Info', tabFin:'Financials',
+    tabTrade:'Trade History', tabOwn:'Ownership',
     prevClose:'Prev. Close', openClose:'Open / Close', highLow:'High / Low',
     volTrades:'Volume / Trades', trades:'trades', shares:'shares',
     startDate:'Start Date', endDate:'End Date', filter:'Filter', allBtn:'All',
-    tradedHistory:'Trading History', tradingDays:'trading days',
-    noData:'No data available', noInfo:'No information available yet',
-    balanceSheet:'Balance Sheet', incomeStatement:'Income Statement',
+    tradedHistory:'Trading History', num:'#', date:'Date', open:'Open', close:'Close',
+    highLowCol:'High / Low', volume:'Volume', turnover:'Turnover', tradesCol:'Trades',
+    tradingDays:'trading days', noDataShort:'No data',
+    noData:'No data available', noDataRange:'No data in the selected range',
+    noInfo:'No information available yet', profileNotFound:'Profile not found',
+    industry:'Class', mse:'MSE',
+    ownStructure:'Ownership Structure', influentialOwners:'Key Shareholders',
+    topOwner:'Largest Shareholder', boardMembers:'Board Members',
+    execMgmt:'Executive Management', smallOwners:'Minority Shareholders',
+    ownersTitle:'Key Shareholders', name:'Name', pct:'Share', count:'Shares',
+    viewHistory:'View historical changes', record:'records', noInfoAvail:'No information available',
+    report:'Report', balanceSheet:'Balance Sheet', incomeStatement:'Income Statement',
     cashFlow:'Cash Flow', equityChanges:'Changes in Equity',
-    noFinData:'Financial reports not available yet',
+    totalAssets:'Total Assets', totalLiab:'Total Liabilities', equity:'Equity', netIncome:'Net Income',
+    revenueChart:'Revenue', niChart:'Net Income',
+    noFinData:'Financial reports not available yet', noStatementData:'No data for this period',
+    code:'Code', indicator:'Indicator', openingBal:'Opening Balance', closingBal:'Closing Balance',
+    createdDate:'Founded', listedDate:'Listed on MSE', ceo:'CEO',
+    employees:'Total Employees', phoneFax:'Phone / Fax', email:'Email', website:'Website',
+    address:'Address', regNum:'Registration No.', certNum:'Certificate No.',
   }
 };
-function t(key) { return UI_TEXT[currentLang][key] || key; }
+function t(key) { return (UI_TEXT[currentLang] && UI_TEXT[currentLang][key]) || key; }
+
+// Санхүүгийн болон профайлын мөрийн НЭРСИЙН толь — бүх компанид ажиллана
+const FIELD_TRANSLATIONS = {
+  'ХӨРӨНГӨ':'ASSETS', 'Эргэлтийн хөрөнгө':'Current Assets',
+  'Мөнгө, түүнтэй адилтгах хөрөнгө':'Cash and Cash Equivalents',
+  'Дансны авлага':'Accounts Receivable',
+  'Татвар, НДШ-ийн авлага':'Tax and Social Insurance Receivable',
+  'Бусад авлага':'Other Receivables', 'Урьдчилж төлсөн зардал':'Prepaid Expenses',
+  'Бараа материал':'Inventory', 'Эргэлтийн бус хөрөнгө':'Non-Current Assets',
+  'Үндсэн хөрөнгө':'Fixed Assets', 'Биет бус хөрөнгө':'Intangible Assets',
+  'Урт хугацаат хөрөнгө оруулалт':'Long-term Investments',
+  'Нийт хөрөнгийн дүн':'Total Assets',
+  'ӨР ТӨЛБӨР':'LIABILITIES', 'Богино хугацаат өр төлбөр':'Short-term Liabilities',
+  'Урт хугацаат өр төлбөр':'Long-term Liabilities',
+  'Өглөг':'Accounts Payable', 'Богино хугацаат зээл':'Short-term Loans',
+  'Урт хугацаат зээл':'Long-term Loans', 'Өр төлбөрийн дүн':'Total Liabilities',
+  'ЭЗДИЙН ӨМЧ':'EQUITY', 'Дүрмийн сан':'Charter Capital',
+  'Нэмж төлөгдсөн капитал':'Additional Paid-in Capital', 'Нөөц сан':'Reserve Fund',
+  'Хуримтлагдсан ашиг':'Retained Earnings', 'Эздийн өмчийн дүн':'Total Equity',
+  'Эзэмшигчдийн өмчийн дүн':'Total Equity',
+  'Борлуулалтын орлого':'Sales Revenue', 'Даатгалын хураамжийн орлого':'Insurance Premium Income',
+  'Хүүгийн орлого':'Interest Income', 'Хүүгийн цэвэр орлого':'Net Interest Income',
+  'Борлуулалтын өртөг':'Cost of Sales', 'Нийт ашиг':'Gross Profit',
+  'Борлуулалтын зардал':'Selling Expenses', 'Ерөнхий удирдлагын зардал':'General & Admin Expenses',
+  'Үндсэн үйл ажиллагааны ашиг':'Operating Profit',
+  'Татварын өмнөх ашиг':'Profit Before Tax', 'Орлогын албан татвар':'Income Tax',
+  'Тайлант үеийн цэвэр ашиг':'Net Income for the Period',
+  'Үндсэн үйл ажиллагааны мөнгөн гүйлгээ':'Operating Cash Flow',
+  'Хөрөнгө оруулалтын үйл ажиллагааны мөнгөн гүйлгээ':'Investing Cash Flow',
+  'Санхүүгийн үйл ажиллагааны мөнгөн гүйлгээ':'Financing Cash Flow',
+  'Мөнгөн орлогын дүн':'Total Cash Inflow', 'Мөнгөн зарлагын дүн':'Total Cash Outflow',
+  'Гүйцэтгэх захирал':'CEO', 'Нийт ажилчдын тоо':'Total Employees',
+  'Байгуулагдсан огноо':'Founded', 'МХБ-д бүртгүүлсэн огноо':'Listed on MSE',
+  'Утас, Факс':'Phone / Fax', 'И-мэйл':'Email', 'Вэб сайт':'Website',
+  'Байршил хаяг':'Address', 'Бизнесийн чиглэл':'Industry',
+  'Үйл ажиллагааны чиглэл':'Business Line',
+  'Үйл ажиллагааны байдал':'Operating Status', 'Хэвийн':'Normal',
+  'Улсын бүртгэлийн дугаар':'State Registration No.', 'Гэрчилгээний дугаар':'Certificate No.',
+};
+function tf(label) {
+  if (currentLang !== 'en') return label;
+  if (!label) return label;
+  if (FIELD_TRANSLATIONS[label]) return FIELD_TRANSLATIONS[label];
+  const trimmed = String(label).trim();
+  return FIELD_TRANSLATIONS[trimmed] || label;
+}
 
 function toggleLang() {
   currentLang = currentLang === 'mn' ? 'en' : 'mn';
   localStorage.setItem('mp_lang', currentLang);
-  document.getElementById('langLabel').textContent = currentLang === 'mn' ? 'EN' : 'MN';
+  const lbl = document.getElementById('langLabel');
+  if (lbl) lbl.textContent = currentLang === 'mn' ? 'EN' : 'MN';
   applyStaticTranslations();
   renderList();
-  if (currentSym) { const btn=document.querySelector(`.view-tab[data-view="${currentView}"]`); if(btn) setView(currentView, btn); }
+  if (currentSym) {
+    resetStatsLabelsOnly();
+    const btn = document.querySelector(`.view-tab[data-view="${currentView}"]`);
+    if (btn) setView(currentView, btn);
+    else render(currentSym);
+  }
 }
 
 function applyStaticTranslations() {
-  const ph = document.getElementById('searchInput'); if (ph) ph.placeholder = t('searchPh');
-  document.querySelectorAll('#catRow .cat-btn')[0].textContent = t('all');
-  document.querySelectorAll('#catRow .cat-btn')[1].textContent = t('catI');
-  document.querySelectorAll('#catRow .cat-btn')[2].textContent = t('catII');
-  document.querySelectorAll('#catRow .cat-btn')[3].textContent = t('catIII');
-  document.querySelector('.view-tab[data-view="tojim"]').textContent = t('tabTojim');
-  document.querySelector('.view-tab[data-view="general"]').textContent = t('tabGeneral');
-  document.querySelector('.view-tab[data-view="financials"]').textContent = t('tabFin');
-  document.querySelector('.view-tab[data-view="tradehist"]').textContent = t('tabTrade');
-  document.querySelector('.view-tab[data-view="ownership"]').textContent = t('tabOwn');
+  const sbTitle = document.querySelector('.sb-title'); if (sbTitle) sbTitle.textContent = t('stocksTitle');
+  const sInput = document.getElementById('searchInput'); if (sInput) sInput.placeholder = t('searchPh');
+  const catBtns = document.querySelectorAll('#catRow .cat-btn');
+  if (catBtns[0]) catBtns[0].textContent = t('all');
+  if (catBtns[1]) catBtns[1].textContent = t('catI');
+  if (catBtns[2]) catBtns[2].textContent = t('catII');
+  if (catBtns[3]) catBtns[3].textContent = t('catIII');
+
+  const vTojim = document.querySelector('.view-tab[data-view="tojim"]'); if (vTojim) vTojim.textContent = t('tabTojim');
+  const vGeneral = document.querySelector('.view-tab[data-view="general"]'); if (vGeneral) vGeneral.textContent = t('tabGeneral');
+  const vFin = document.querySelector('.view-tab[data-view="financials"]'); if (vFin) vFin.textContent = t('tabFin');
+  const vTrade = document.querySelector('.view-tab[data-view="tradehist"]'); if (vTrade) vTrade.textContent = t('tabTrade');
+  const vOwn = document.querySelector('.view-tab[data-view="ownership"]'); if (vOwn) vOwn.textContent = t('tabOwn');
+
+  if (!currentSym) {
+    const hName = document.getElementById('heroName'); if (hName) hName.textContent = t('selectCo');
+  }
+
+  // Тойм таб-ын stat-card гарчгууд
+  const statCards = document.querySelectorAll('#tabTojim .stat-lbl');
+  if (statCards[0]) statCards[0].textContent = t('prevClose');
+  if (statCards[1]) statCards[1].textContent = t('openClose');
+  if (statCards[2]) statCards[2].textContent = t('highLow');
+  if (statCards[3]) statCards[3].textContent = t('volTrades');
+
+  // Арилжааны түүх filter mөр
+  const thLbls = document.querySelectorAll('#thFilterRow .th-lbl');
+  if (thLbls[0]) thLbls[0].textContent = t('startDate');
+  if (thLbls[1]) thLbls[1].textContent = t('endDate');
+  const thBtn = document.querySelector('#thFilterRow .th-btn:not(.th-btn-clear)'); if (thBtn) thBtn.textContent = t('filter');
+  const thBtnClear = document.querySelector('#thFilterRow .th-btn-clear'); if (thBtnClear) thBtnClear.textContent = t('allBtn');
+  const tradeCardTitle = document.querySelector('#tabTradeHist .card-title'); if (tradeCardTitle) tradeCardTitle.textContent = t('tradedHistory');
 }
+
+function resetStatsLabelsOnly() {
+  // stat-card-уудын гарчиг хэлний дагуу шинэчлэгдэнэ (утга нь render() дараа ирнэ)
+}
+
 let klineChart = null;
 let currentTheme = localStorage.getItem('mp_theme') || 'dark';
 document.documentElement.setAttribute('data-theme', currentTheme);
@@ -1293,10 +1408,11 @@ function renderFinancials(sym) {
   const periods = cache.periods;
   const body = document.getElementById('finBody');
   if (!periods.length) { body.innerHTML = '<div class="empty">Мэдээлэл байхгүй</div>'; return; }
+
   const ratiosByPeriod = periods.map(p => ({
     period: p, ...(cache.data[p] ? finExtractRatios(cache.data[p]) : {})
   }));
-  const chartPeriods = ratiosByPeriod.slice(-3); // зөвхөн сүүлийн 3 хугацааг chart дээр харуулна
+  const chartPeriods = ratiosByPeriod.slice(-3);
   const maxRev = Math.max(1, ...chartPeriods.map(r => Math.abs(r.revenue || 0)));
   const maxNi  = Math.max(1, ...chartPeriods.map(r => Math.abs(r.netIncome || 0)));
 
@@ -1320,9 +1436,10 @@ function renderFinancials(sym) {
   const latest = ratiosByPeriod[ratiosByPeriod.length - 1] || {};
 
   const periodOptions = periods.map(p =>
-      `<option value="${p}"${st.period===p?' selected':''}>${periodLabel(p)}</option>`
-    ).join('');
-    const periodSelect = `<select class="th-date" style="font-weight:700;cursor:pointer;font-size:14px;padding:8px 14px;border-radius:4px;" onchange="finSetPeriod('${sym}', this.value)">${periodOptions}</select>`;
+    `<option value="${p}"${st.period===p?' selected':''}>${periodLabel(p)}</option>`
+  ).join('');
+  const periodSelect = `<select class="th-date" style="font-weight:700;cursor:pointer;font-size:14px;padding:8px 14px;border-radius:4px;" onchange="finSetPeriod('${sym}', this.value)">${periodOptions}</select>`;
+
   const periodJson = cache.data[st.period];
   const availStatements = FIN_STATEMENTS.filter(s => periodJson && periodJson[s.key] && periodJson[s.key].length);
   const subTabs = availStatements.map(s =>
@@ -1371,9 +1488,9 @@ function renderFinancials(sym) {
     </div>
     <div class="trade-card">
       <div class="card-head" style="flex-wrap:wrap;gap:10px">
-              <span class="card-title">Тайлан</span>
-              ${periodSelect}
-            </div>
+        <span class="card-title">Тайлан</span>
+        ${periodSelect}
+      </div>
       <div class="th-filter-row" style="border-top:1px solid var(--border-lt)">
         <div class="sub-tab-row">${subTabs}</div>
       </div>
@@ -1382,7 +1499,6 @@ function renderFinancials(sym) {
   `;
 }
 applyTheme(currentTheme);
-applyStaticTranslations();
 init();
 </script>
 </body>
