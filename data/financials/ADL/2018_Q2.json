@@ -1,0 +1,1092 @@
+{
+  "balance_sheet": [
+    {
+      "№": "1",
+      "Items": "Assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1",
+      "Items": "Current Asset",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.1",
+      "Items": "Cash and cash equivalent",
+      "At Jan 01, 2018": 1528242.9,
+      "At June 30, 2018": 1754395.1
+    },
+    {
+      "№": "1.1.2",
+      "Items": "Trade receivables",
+      "At Jan 01, 2018": 1749675.9,
+      "At June 30, 2018": 2450193.1
+    },
+    {
+      "№": "1.1.3",
+      "Items": "Tax receivable",
+      "At Jan 01, 2018": 20119.8,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.4",
+      "Items": "Other receivable",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.5",
+      "Items": "Other current financial assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.6",
+      "Items": "Inventories",
+      "At Jan 01, 2018": 1827223.5,
+      "At June 30, 2018": 1737785.1
+    },
+    {
+      "№": "1.1.7",
+      "Items": "Prepayments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.8",
+      "Items": "Other current assets",
+      "At Jan 01, 2018": 113875,
+      "At June 30, 2018": 113988.5
+    },
+    {
+      "№": "1.1.9",
+      "Items": "Assets classified as held for sale",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.10",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.11",
+      "Items": "Total Current Asset",
+      "At Jan 01, 2018": 5239137.1,
+      "At June 30, 2018": 6056361.8
+    },
+    {
+      "№": "1.2",
+      "Items": "Non-current asset",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.1",
+      "Items": "Property, plant and equipment",
+      "At Jan 01, 2018": 4804552.3,
+      "At June 30, 2018": 4132645.9
+    },
+    {
+      "№": "1.2.2",
+      "Items": "Intangible assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.3",
+      "Items": "Livestock (Agricultural)",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.4",
+      "Items": "Long term investments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.5",
+      "Items": "Exploration and evaluation assets",
+      "At Jan 01, 2018": 141314.6,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.6",
+      "Items": "Deferred tax asset",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.7",
+      "Items": "Investment properties",
+      "At Jan 01, 2018": 44000,
+      "At June 30, 2018": 44000
+    },
+    {
+      "№": "1.2.8",
+      "Items": "Other non-current assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.9",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.10",
+      "Items": "Total Non-Current Asset",
+      "At Jan 01, 2018": 4989866.9,
+      "At June 30, 2018": 4176645.9
+    },
+    {
+      "№": "1.3",
+      "Items": "Total Asset",
+      "At Jan 01, 2018": 10229004,
+      "At June 30, 2018": 10233007.7
+    },
+    {
+      "№": "2",
+      "Items": "Liabilities and Equity",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1",
+      "Items": "Liabilities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1",
+      "Items": "Current Liabilities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.1",
+      "Items": "Trade payables",
+      "At Jan 01, 2018": 131539.1,
+      "At June 30, 2018": 18711.6
+    },
+    {
+      "№": "2.1.1.2",
+      "Items": "Salary payable",
+      "At Jan 01, 2018": 41728.1,
+      "At June 30, 2018": 100665.3
+    },
+    {
+      "№": "2.1.1.3",
+      "Items": "Income tax payable",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 66579.7
+    },
+    {
+      "№": "2.1.1.4",
+      "Items": "Personal income tax payable",
+      "At Jan 01, 2018": 2680.3,
+      "At June 30, 2018": 16953.3
+    },
+    {
+      "№": "2.1.1.5",
+      "Items": "Short term loans and borrowings",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.6",
+      "Items": "Interest payable",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.7",
+      "Items": "Dividend payable",
+      "At Jan 01, 2018": 21771.5,
+      "At June 30, 2018": 21771.5
+    },
+    {
+      "№": "2.1.1.8",
+      "Items": "Deferred revenue ",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.9",
+      "Items": "Provisions",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.10",
+      "Items": "Other liabilities",
+      "At Jan 01, 2018": 39423.2,
+      "At June 30, 2018": 57964.2
+    },
+    {
+      "№": "2.1.1.11",
+      "Items": "Liabilities directly associated with the assets classified as held for sale",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.12",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.1.13",
+      "Items": "Total current liabilities",
+      "At Jan 01, 2018": 237142.2,
+      "At June 30, 2018": 282645.6
+    },
+    {
+      "№": "2.1.2",
+      "Items": "Long term liabilities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.2.1",
+      "Items": "Long term loans and borrowings",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.2.2",
+      "Items": "Provisions",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.2.3",
+      "Items": "Deferred tax liability ",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.2.4",
+      "Items": "Other liabilities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.2.5",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.2.6",
+      "Items": "Total long term liabilities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.2",
+      "Items": "Total Liabilities",
+      "At Jan 01, 2018": 237142.2,
+      "At June 30, 2018": 282645.6
+    },
+    {
+      "№": null,
+      "Items": "Equity",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3",
+      "Items": "Issued capital",
+      "At Jan 01, 2018": 891231.8,
+      "At June 30, 2018": 891231.8
+    },
+    {
+      "№": "2.3.1",
+      "Items": "state owned",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.2",
+      "Items": "private",
+      "At Jan 01, 2018": 891231.8,
+      "At June 30, 2018": 891231.8
+    },
+    {
+      "№": "2.3.3",
+      "Items": "Listed ",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.4",
+      "Items": "Treasury shares",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.5",
+      "Items": "Share premium",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.6",
+      "Items": "Revaluation reserve",
+      "At Jan 01, 2018": 4883798.1,
+      "At June 30, 2018": 4883798.1
+    },
+    {
+      "№": "2.3.7",
+      "Items": "Foreign currency translation reserve",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.8",
+      "Items": "Other components of equity",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.9",
+      "Items": "Retained earnings",
+      "At Jan 01, 2018": 4216831.9,
+      "At June 30, 2018": 4175332.2
+    },
+    {
+      "№": "2.3.10",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3.11",
+      "Items": "Total equity",
+      "At Jan 01, 2018": 9991861.8,
+      "At June 30, 2018": 9950362.1
+    },
+    {
+      "№": "2.4",
+      "Items": "Total Liabilities and Equity",
+      "At Jan 01, 2018": 10229004,
+      "At June 30, 2018": 10233007.7
+    }
+  ],
+  "income_statement": [
+    {
+      "№": "1",
+      "Items": "Sale of goods ",
+      "At Jan 01, 2018": 7998926.3,
+      "At June 30, 2018": 4089323.9
+    },
+    {
+      "№": "2",
+      "Items": "Cost of sales",
+      "At Jan 01, 2018": 7186832.1,
+      "At June 30, 2018": 3325393.6
+    },
+    {
+      "№": "3",
+      "Items": "Gross profit",
+      "At Jan 01, 2018": 812094.2,
+      "At June 30, 2018": 763930.3
+    },
+    {
+      "№": "4",
+      "Items": "Rental income",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "5",
+      "Items": "Interest income",
+      "At Jan 01, 2018": 141834.9,
+      "At June 30, 2018": 119085.8
+    },
+    {
+      "№": "6",
+      "Items": "Dividends income",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "7",
+      "Items": "Commission income",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "8",
+      "Items": "Other income",
+      "At Jan 01, 2018": 133146.3,
+      "At June 30, 2018": 31381.5
+    },
+    {
+      "№": "9",
+      "Items": "Selling and advertisement expense",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "10",
+      "Items": "General and administrative expense",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "11",
+      "Items": "Finance costs",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "12",
+      "Items": "Other operating expense",
+      "At Jan 01, 2018": 559561.3,
+      "At June 30, 2018": 506494.9
+    },
+    {
+      "№": "13",
+      "Items": "Foreign exchange gain (loss)",
+      "At Jan 01, 2018": -6914.1,
+      "At June 30, 2018": 1174.9
+    },
+    {
+      "№": "14",
+      "Items": "Gain (loss) on disposal of Property, plant and equipment",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "15",
+      "Items": "Gain (loss) on disposal of intangible assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "16",
+      "Items": "Gain (loss) on disposal of investments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "17",
+      "Items": "Other gain (loss)",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "18",
+      "Items": "Profit before tax",
+      "At Jan 01, 2018": 520600,
+      "At June 30, 2018": 409077.6
+    },
+    {
+      "№": "19",
+      "Items": "Income tax expense",
+      "At Jan 01, 2018": 85098.4,
+      "At June 30, 2018": 40907.8
+    },
+    {
+      "№": "20",
+      "Items": "Profit after tax ",
+      "At Jan 01, 2018": 435501.6,
+      "At June 30, 2018": 368169.8
+    },
+    {
+      "№": "21",
+      "Items": "Profit (loss) after tax from discontinued operations",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "22",
+      "Items": "Profit for the year",
+      "At Jan 01, 2018": 435501.6,
+      "At June 30, 2018": 368169.8
+    },
+    {
+      "№": "23",
+      "Items": "Other comprehensive income",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "23.1",
+      "Items": "Revaluation of assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "23.2",
+      "Items": "Exchange differences on translation of foreign operations",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "23.3",
+      "Items": "Other gain (loss)",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "24",
+      "Items": "Net profit (loss) representing total comprehensive income (loss)",
+      "At Jan 01, 2018": 435501.6,
+      "At June 30, 2018": 368169.8
+    },
+    {
+      "№": "25",
+      "Items": "Earnings per share",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    }
+  ],
+  "equity_changes": [
+    {
+      "№": "8",
+      "Items": "At 31 December 2016",
+      "Issued capital": 891231.8,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 4883798.1,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 4159486.7,
+      "Total": 9934516.6
+    },
+    {
+      "№": "1",
+      "Items": "Adjustments due to changes in accounting policies",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "2",
+      "Items": "Restated balance",
+      "Issued capital": 891231.8,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 4883798.1,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 4159486.7,
+      "Total": 9934516.6
+    },
+    {
+      "№": "3",
+      "Items": "Profit (loss) for the period",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 435501.6,
+      "Total": 435501.6
+    },
+    {
+      "№": "4",
+      "Items": "Other comprehensive income",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "5",
+      "Items": "Issue of share capital",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "6",
+      "Items": "Dividends",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 378156.4,
+      "Total": 378156.4
+    },
+    {
+      "№": "7",
+      "Items": "Revaluation",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "8",
+      "Items": "At 31 December 2017",
+      "Issued capital": 891231.8,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 4883798.1,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 4216831.9,
+      "Total": 9991861.8
+    },
+    {
+      "№": "1",
+      "Items": "Adjustments due to changes in accounting policies",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "2",
+      "Items": "Restated balance",
+      "Issued capital": 891231.8,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 4883798.1,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 4216831.9,
+      "Total": 9991861.8
+    },
+    {
+      "№": "3",
+      "Items": "Profit (loss) for the period",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 368169.8,
+      "Total": 368169.8
+    },
+    {
+      "№": "4",
+      "Items": "Other comprehensive income",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "5",
+      "Items": "Issue of share capital",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "6",
+      "Items": "Dividends",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 409669.5,
+      "Total": 409669.5
+    },
+    {
+      "№": "7",
+      "Items": "Revaluation",
+      "Issued capital": 0,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 0,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 0,
+      "Total": 0
+    },
+    {
+      "№": "8",
+      "Items": "At 30 June 2018",
+      "Issued capital": 891231.8,
+      "Treasury shares": 0,
+      "Share premium": 0,
+      "Revaluation reserve": 4883798.1,
+      "Foreign currency translation reserve": 0,
+      "Other components of equity": 0,
+      "Retained Earnings": 4175332.2,
+      "Total": 9950362.1
+    }
+  ],
+  "cash_flow": [
+    {
+      "№": "1",
+      "Items": "Cash flows from operating activities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1",
+      "Items": "Cash inflow",
+      "At Jan 01, 2018": 9901845.1,
+      "At June 30, 2018": 4459052.7
+    },
+    {
+      "№": "1.1.1",
+      "Items": "sales of goods, rendering of services",
+      "At Jan 01, 2018": 9898952.2,
+      "At June 30, 2018": 4447913.8
+    },
+    {
+      "№": "1.1.2",
+      "Items": "Commission income",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.3",
+      "Items": "Insurance compensation",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.4",
+      "Items": "Tax Return",
+      "At Jan 01, 2018": 269.5,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.5",
+      "Items": "Grants and subsidies",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.1.6",
+      "Items": "Other cash income",
+      "At Jan 01, 2018": 2623.4,
+      "At June 30, 2018": 11138.9
+    },
+    {
+      "№": "1.2",
+      "Items": "Cash outflow",
+      "At Jan 01, 2018": 9114413.6,
+      "At June 30, 2018": 3897425.7
+    },
+    {
+      "№": "1.2.1",
+      "Items": "Employee's salary payment",
+      "At Jan 01, 2018": 47966.6,
+      "At June 30, 2018": 745879.9
+    },
+    {
+      "№": "1.2.2",
+      "Items": "Social and health insurance",
+      "At Jan 01, 2018": 380229.8,
+      "At June 30, 2018": 188577.2
+    },
+    {
+      "№": "1.2.3",
+      "Items": "Inventories purchased",
+      "At Jan 01, 2018": 7256890.7,
+      "At June 30, 2018": 1999201.2
+    },
+    {
+      "№": "1.2.4",
+      "Items": "Cash paid for utility",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.5",
+      "Items": "Fuel, petrol, transportation fee, spare parts purchase",
+      "At Jan 01, 2018": 1144,
+      "At June 30, 2018": 2245.5
+    },
+    {
+      "№": "1.2.6",
+      "Items": "Interest payment",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 7446.6
+    },
+    {
+      "№": "1.2.7",
+      "Items": "Tax payment",
+      "At Jan 01, 2018": 1228331.9,
+      "At June 30, 2018": 581567.3
+    },
+    {
+      "№": "1.2.8",
+      "Items": "Insurance payments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "1.2.9",
+      "Items": "Other cash payments",
+      "At Jan 01, 2018": 199850.6,
+      "At June 30, 2018": 372508
+    },
+    {
+      "№": "1.3",
+      "Items": "Net cash flow from generated from operating activities",
+      "At Jan 01, 2018": 787431.5,
+      "At June 30, 2018": 561627
+    },
+    {
+      "№": "2",
+      "Items": "Cash flows from investing activities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1",
+      "Items": "Cash inflow",
+      "At Jan 01, 2018": 81107.2,
+      "At June 30, 2018": 157198.3
+    },
+    {
+      "№": "2.1.1",
+      "Items": "Proceeds from disposal of property, plant and equipment",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 62658
+    },
+    {
+      "№": "2.1.2",
+      "Items": "Proceeds from disposal of intangible assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.3",
+      "Items": "Proceeds from disposal of investments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.4",
+      "Items": "Proceeds from disposal of other non current assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.5",
+      "Items": "Repayment of loan receivables, reimbursement of prepayments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.6",
+      "Items": "Interest received",
+      "At Jan 01, 2018": 81107.2,
+      "At June 30, 2018": 94540.3
+    },
+    {
+      "№": "2.1.7",
+      "Items": "Dividends received",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.1.8",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.2",
+      "Items": "Cash outflow",
+      "At Jan 01, 2018": 46661.4,
+      "At June 30, 2018": 124090.9
+    },
+    {
+      "№": "2.2.1",
+      "Items": "Additions to property, plant and equipment",
+      "At Jan 01, 2018": 46661.4,
+      "At June 30, 2018": 124090.9
+    },
+    {
+      "№": "2.2.2",
+      "Items": "Additions to intangible assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.2.3",
+      "Items": "Investments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.2.4",
+      "Items": "Acquisition of other assets",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.2.5",
+      "Items": "Loans provided, and prepayments",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.2.6",
+      "Items": null,
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "2.3",
+      "Items": "Net cash flow used in investing activities ",
+      "At Jan 01, 2018": 34445.8,
+      "At June 30, 2018": 33107.4
+    },
+    {
+      "№": "3",
+      "Items": "Cash flows from financing activities",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.1",
+      "Items": "Cash inflow",
+      "At Jan 01, 2018": 406898.1,
+      "At June 30, 2018": 1134.3
+    },
+    {
+      "№": "3.1.1",
+      "Items": "Bank loans and bonds",
+      "At Jan 01, 2018": 400000,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.1.2",
+      "Items": "Issue of share capital",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.1.3",
+      "Items": "Donations",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.1.4",
+      "Items": "Foreign exchange gain",
+      "At Jan 01, 2018": 6898.1,
+      "At June 30, 2018": 1134.3
+    },
+    {
+      "№": "3.2",
+      "Items": "Cash outflow",
+      "At Jan 01, 2018": 668171.8,
+      "At June 30, 2018": 369716.5
+    },
+    {
+      "№": "3.2.1",
+      "Items": "Repayment of loans and debts",
+      "At Jan 01, 2018": 400000,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.2.2",
+      "Items": "Financial leases",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.2.3",
+      "Items": "Share repurchase",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "3.2.4",
+      "Items": "Dividends",
+      "At Jan 01, 2018": 255403.8,
+      "At June 30, 2018": 368702.6
+    },
+    {
+      "№": "3.2.5",
+      "Items": "Foreign exchange loss",
+      "At Jan 01, 2018": 12768,
+      "At June 30, 2018": 1013.9
+    },
+    {
+      "№": "3.3",
+      "Items": "Net cash used in financing activities",
+      "At Jan 01, 2018": -261273.7,
+      "At June 30, 2018": -368582.2
+    },
+    {
+      "№": "4",
+      "Items": "Effect of foreign exchange changes on cash and cash equivalents",
+      "At Jan 01, 2018": 0,
+      "At June 30, 2018": 0
+    },
+    {
+      "№": "4.1",
+      "Items": "Net increase/decrease in cash and cash equivalents",
+      "At Jan 01, 2018": 560603.6,
+      "At June 30, 2018": 226152.2
+    },
+    {
+      "№": "5",
+      "Items": "Cash and cash equivalents at 01 Jan 2018",
+      "At Jan 01, 2018": 967639.3,
+      "At June 30, 2018": 1528242.9
+    },
+    {
+      "№": "6",
+      "Items": "Cash and cash equivalents at 30 June 2018",
+      "At Jan 01, 2018": 1528242.9,
+      "At June 30, 2018": 1754395.1
+    }
+  ],
+  "_source_sheets_found": [
+    "balance sheet",
+    "income statement",
+    "owner's equity",
+    "cashflow"
+  ],
+  "sym": "ADL",
+  "source_file": "data\\financials_raw\\ADL\\2018_Q2.xls"
+}
