@@ -68,22 +68,12 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
 .sb-search{padding:9px 12px;border-bottom:1px solid var(--border-lt);}
 .sb-input{width:100%;padding:6px 10px 6px 30px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;color:var(--text);font-family:var(--sans);outline:none;transition:border-color .15s;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%238496b8' stroke-width='2.2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") 9px center no-repeat;}
 .sb-input:focus{border-color:var(--blue);background-color:var(--white);}
-.sec-tab-row{display:flex;padding:8px 12px 0;gap:3px;border-bottom:1px solid var(--border-lt);flex-wrap:wrap;}
-.sec-tab{padding:5px 11px;border-radius:7px 7px 0 0;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;border:1.5px solid var(--border);border-bottom:2px solid transparent;background:var(--bg);transition:all .15s;font-family:var(--sans);}
-.sec-tab:hover{color:var(--blue);}
-.sec-tab.active{background:var(--white);color:var(--blue);border-color:var(--border);border-bottom-color:var(--white);margin-bottom:-1px;}
 .cat-row{display:flex;padding:7px 12px;gap:4px;border-bottom:1px solid var(--border-lt);}
-.content > .sec-tab-row{border-bottom:none;padding:0;gap:6px;}
-.content > .sec-tab-row .sec-tab{border-radius:8px;border:1.5px solid var(--border);}
-.content > .sec-tab-row .sec-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
 .view-tab-row{display:flex;gap:6px;padding:0;}
 .view-tab{padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
 .view-tab:hover{color:var(--blue);border-color:var(--blue);}
 .view-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
 .view-tab.disabled{opacity:.45;cursor:not-allowed;}
-.view-tab.stock-only-hidden{display:none;}
-.hero-tag.status-active{color:var(--green);}
-.hero-tag.status-inactive{color:var(--red);}
 .view-tab.disabled:hover{color:var(--text2);border-color:var(--border);}
 .sub-tab-row{display:flex;gap:4px;padding:2px 0;}
 .sub-tab{padding:4px 11px;border-radius:12px;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
@@ -123,7 +113,6 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
 .info-tags{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
 .info-tag{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:var(--blue-xlt);color:var(--blue);font-family:var(--sans);}
 .info-tag.status-ok{background:var(--green-bg);color:var(--green);}
-.info-tag.status-bad{background:var(--red-bg);color:var(--red);}
 .info-tag.status-bad{background:var(--red-bg);color:var(--red);}
 .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;}
 .info-item{display:flex;align-items:flex-start;gap:10px;}
@@ -273,7 +262,6 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
   </aside>
 
   <main class="content">
-    <!-- other securities tabs хасагдсан — зөвхөн хувьцаа -->
     <div class="hero-card">
       <div style="display:flex;align-items:center;gap:14px;">
         <div class="hero-logo" id="heroLogo">—</div>
@@ -292,11 +280,11 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
     </div>
 
     <div class="view-tab-row" id="viewTabRow" style="display:none">
-      <button class="view-tab active stock-only" data-view="tojim" onclick="setView('tojim',this)">Тойм</button>
+      <button class="view-tab active" data-view="tojim" onclick="setView('tojim',this)">Тойм</button>
       <button class="view-tab" data-view="general" onclick="setView('general',this)">Ерөнхий мэдээлэл</button>
-      <button class="view-tab disabled stock-only" data-view="financials" onclick="return false;" title="Тун удахгүй">Санхүүгийн мэдээлэл</button>
+      <button class="view-tab disabled" data-view="financials" onclick="return false;" title="Тун удахгүй">Санхүүгийн мэдээлэл</button>
       <button class="view-tab" data-view="tradehist" onclick="setView('tradehist',this)">Арилжааны түүх</button>
-      <button class="view-tab stock-only" data-view="ownership" onclick="setView('ownership',this)">Хувьцаа эзэмшил</button>
+      <button class="view-tab" data-view="ownership" onclick="setView('ownership',this)">Хувьцаа эзэмшил</button>
     </div>
 
     <div id="tabTojim">
@@ -304,12 +292,6 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
       <div id="chartWrap"></div>
     </div>
 
-    <div class="trade-card" id="otherInfoCard" style="display:none">
-      <div class="card-head">
-        <span class="card-title">Ерөнхий мэдээлэл</span>
-      </div>
-      <div id="otherInfoBody"></div>
-    </div>  
     <div class="stats-grid">
       <div class="stat-card"><div class="stat-lbl">Өмнөх Хаалт</div><div class="stat-val" id="stPrev">—</div></div>
       <div class="stat-card"><div class="stat-lbl">Нээлт / Хаалт</div><div class="stat-val" id="stOC">—</div><div class="stat-sub" id="stOCSub"></div></div>
@@ -365,169 +347,12 @@ const COMPANIES = [
   {id:461,sym:'ADL',name:'Адуун чулуун ХК',cat:'III'},
 ];
 
-const SPLIT_MARKS = {
-  'APU':  [{'date':'2008-07-15','label':'S 1:1000'},{'date':'2016-06-20','label':'S 1:10'}],
-  'SUU':  [{'date':'2005-06-15','label':'S 1:100'}, {'date':'2016-06-20','label':'S 1:1000'}],
-  'BUK':  [{'date':'2008-09-23','label':'S 1:10'}],
-  'JLT':  [{'date':'2007-09-19','label':'S 1:1000'}],
-  'GOV':  [{'date':'2007-08-08','label':'S 1:20'}],
-  'DZG':  [{'date':'2009-02-02','label':'S 1:10'}],
-  'TUS':  [{'date':'2008-07-04','label':'S 1:100'}],
-  'ADU':  [{'date':'2023-04-04','label':'S 1:177'}],
-  'MBG':  [{'date':'2009-02-02','label':'S 1:10'}],
-  'AMT':  [{'date':'2011-10-19','label':'S 1:100'}],
-};
-
 let cache = {};
 let currentSym = null;
 let catFilter = 'all';
-let secCategory = 'STOCK';
-let otherSecuritiesIndex = null;
-let currentOtherId = null;
-let otherCache = {}; // { [id]: {symbol,name,category,general_info,ohlcv,trading_info} }
 let profileCache = {}; // { [sym]: profile json } — 162 хувьцааны data/profiles/{sym}.json
 let currentView = 'tojim';
-let currentGenSub = 'shareholders';
 
-const GENERAL_INFO_FIELDS = {
-  BOND: [
-    ['Үнэт цаас гаргагч', 'Үнэт цаас гаргагч'],
-    ['Байгуулагдсан огноо', 'Байгуулагдсан огноо'],
-    ['Улсын бүртгэлийн дугаар', 'Улсын бүртгэлийн дугаар'],
-    ['Байршил хаяг', 'Байршил хаяг'],
-    ['Утас', 'Утас'],
-    ['И-мэйл', 'И-мэйл'],
-    ['Үйл ажиллагааны чиглэл', 'Үйл ажиллагааны чиглэл'],
-    ['Хүү (%)', 'Хүү'],
-    ['Нэрлэсэн үнэ', 'Нэрлэсэн үнэ'],
-    ['Бондын тоо ширхэг', 'Бондын тоо ширхэг'],
-    ['Буцаан төлөгдөх хугацаа', 'Буцаан төлөгдөх хугацаа'],
-    ['Бондын ангилал', 'Бондын ангилал'],
-    ['Арилжааны огноо', 'Арилжааны огноо'],
-    ['Дуусах огноо', 'Дуусах огноо'],
-    ['Валют', 'Валют'],
-    ['Андеррайтерийн нэр', 'Андеррайтерийн нэр'],
-    ['Андеррайтерийн холбогдох утас', 'Андеррайтерийн холбогдох утас'],
-  ],
-  HBUC: [
-    ['Үүсгэн байгуулагч', 'Үүсгэн байгуулагч'],
-    ['Үнэт цаас гаргагч', 'Үнэт цаас гаргагч'],
-    ['Байгуулагдсан огноо', 'Байгуулагдсан огноо'],
-    ['Улсын бүртгэлийн дугаар', 'Улсын бүртгэлийн дугаар'],
-    ['Үйл ажиллагааны чиглэл', 'Үйл ажиллагааны чиглэл'],
-    ['Байршил хаяг', 'Байршил хаяг'],
-    ['Утас', 'Утас'],
-    ['Факс', 'Факс'],
-    ['И-мэйл', 'И-мэйл'],
-    ['Хүү', 'Хүү'],
-    ['Нэрлэсэн үнэ', 'Нэрлэсэн үнэ'],
-    ['Тоо ширхэг', 'Тоо ширхэг'],
-    ['Хүү төлөгдөх нөхцөл', 'Хүү төлөгдөх нөхцөл'],
-    ['Үндсэн төлбөрийн нөхцөл', 'Үндсэн төлбөрийн нөхцөл'],
-    ['Арилжааны огноо', 'Арилжааны огноо'],
-    ['Буцаан төлөгдөх хугацаа', 'Буцаан төлөгдөх хугацаа'],
-    ['Хөрөнгө итгэмжлэн удирдагч', 'Хөрөнгө итгэмжлэн удирдагч'],
-    ['Холбоо барих мэдээлэл', 'Хөрөнгө итгэмжлэн удирдагчийн холбоо барих мэдээлэл'],
-    ['ISIN', 'ISIN'],
-  ],
-  SAN: [
-    ['Сангийн оноосон нэр', 'Сангийн оноосон нэр'],
-    ['Сангийн үүсгэн байгуулагч', 'Сангийн үүсгэн байгуулагч'],
-    ['Байгуулагдсан огноо', 'Сангийн үүсгэн байгуулагдсан огноо'],
-    ['Улсын бүртгэлийн гэрчилгээ', 'Улсын бүртгэлийн гэрчилгээний дугаар'],
-    ['Регистрийн дугаар', 'Регистрийн дугаар'],
-    ['МХБ-д бүртгүүлсэн огноо', 'МХБ-д бүртгүүлсэн огноо'],
-    ['Байршил хаяг', 'Байршил хаяг'],
-    ['Утас', 'Утас'],
-    ['И-мэйл', 'И-мэйл'],
-    ['Хэлбэр', 'Хөрөнгө оруулалтын сангийн хэлбэр'],
-    ['Хэрэгслүүд', 'Хөрөнгө оруулалтын хэрэгслүүд'],
-  ],
-  ZGDUTS: [
-    ['Үнэт цаас гаргагч', 'Үнэт цаас гаргагч'],
-    ['Хүү (%)', 'Хүү'],
-    ['Нэрлэсэн үнэ', 'Нэрлэсэн үнэ'],
-    ['Бондын тоо ширхэг', 'Бондын тоо ширхэг'],
-    ['Хүү төлөгдөх давтамж', 'Хүү төлөгдөх давтамж'],
-    ['Арилжааны огноо', 'Арилжааны огноо'],
-    ['Дуусах огноо', 'Дуусах огноо'],
-    ['Валют', 'Валют'],
-  ],
-};
-
-function parseFlexibleDate(str) {
-  if (!str) return null;
-  const m = String(str).trim().match(/(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
-  if (!m) return null;
-  return new Date(+m[1], +m[2] - 1, +m[3]);
-}
-
-function computeSecurityStatus(generalInfo) {
-  if (!generalInfo) return null;
-  const endStr = generalInfo['Дуусах огноо'];
-  if (!endStr) return null;
-  const endDate = parseFlexibleDate(endStr);
-  if (!endDate || isNaN(endDate.getTime())) return null;
-  const today = new Date();
-  today.setHours(0,0,0,0);
-  return endDate >= today
-    ? { active: true, label: 'Идэвхтэй' }
-    : { active: false, label: 'Идэвхгүй' };
-}
-
-function iconForFieldKey(key) {
-  const k = key.toLowerCase();
-  if (k.includes('огноо')) return ICON_CALENDAR;
-  if (k.includes('хаяг')) return ICON_PIN;
-  if (k.includes('утас') || k.includes('факс')) return ICON_PHONE;
-  if (k.includes('мэйл')) return ICON_MAIL;
-  if (k.includes('вэб')) return ICON_GLOBE;
-  if (k.includes('хүү') || k.includes('үнэ') || k.includes('дүн')) return ICON_PERCENT;
-  if (k.includes('захирал') || k.includes('итгэмжлэн') || k.includes('андеррайтер') || k.includes('гаргагч') || k.includes('байгуулагч')) return ICON_PERSON;
-  return ICON_HASH;
-}
-
-function isMetaField(key) {
-  const k = key.toLowerCase();
-  return k.includes('дугаар') || k.includes('isin') || k.includes('гэрчилгээ');
-}
-
-function renderGeneralInfo(category, generalInfo) {
-  if (!generalInfo || Object.keys(generalInfo).length === 0) {
-    return '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
-  }
-  const fields = GENERAL_INFO_FIELDS[category] || [];
-
-  let itemsHtml = '';
-  let metaChips = '';
-  fields.forEach(([label, key]) => {
-    const val = generalInfo[key];
-    if (val === undefined || val === null || val === '') return;
-    if (isMetaField(key)) {
-      metaChips += `<span class="info-meta-chip">${label}: ${val}</span>`;
-      return;
-    }
-    const isAddress = key.toLowerCase().includes('хаяг');
-    itemsHtml += `
-    <div class="info-item${isAddress ? ' full' : ''}">
-      <div class="info-icon">${iconForFieldKey(key)}</div>
-      <div>
-        <div class="info-label">${label}</div>
-        <div class="info-value">${val}</div>
-      </div>
-    </div>`;
-  });
-
-  if (!itemsHtml && !metaChips) {
-    return '<div class="info-card"><div class="empty">Одоогоор мэдээлэл байхгүй байна</div></div>';
-  }
-
-  return `
-    <div class="info-card">
-      <div class="info-grid">${itemsHtml}</div>
-      ${metaChips ? `<div class="info-divider"></div><div class="info-meta-row">${metaChips}</div>` : ''}
-    </div>`;
-}
 let klineChart = null;
 let currentTheme = localStorage.getItem('mp_theme') || 'light';
 document.documentElement.setAttribute('data-theme', currentTheme);
@@ -574,11 +399,8 @@ async function loadStock(sym) {
   const co = COMPANIES.find(c => c.sym === sym);
   if (!co) return;
   currentSym = sym;
-  currentOtherId = null;
   document.getElementById('chartCard').style.display = '';
-  document.getElementById('otherInfoCard').style.display = 'none';
   document.getElementById('viewTabRow').style.display = 'flex';
-  setViewTabsMode(false);
   document.getElementById('thFilterRow').style.display = 'flex';
   resetToTojimView();
 
@@ -662,11 +484,6 @@ function render(sym) {
 function renderList() {
   const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
 
-  if (secCategory !== 'STOCK') {
-    renderOtherSecuritiesList(q);
-    return;
-  }
-
   let list = catFilter === 'all' ? COMPANIES : COMPANIES.filter(c => c.cat === catFilter);
   if (q) list = list.filter(c => c.sym.toLowerCase().includes(q) || c.name.toLowerCase().includes(q));
   const grouped = {};
@@ -688,191 +505,6 @@ function renderList() {
   });
   document.getElementById('stockList').innerHTML = html || '<div class="empty">Олдсонгүй</div>';
   document.getElementById('sbCount').textContent = list.length;
-}
-
-let otherStatusCache = {}; // { [id]: {active,label} | null }
-
-async function fetchOtherStatus(id) {
-  if (otherStatusCache[id] !== undefined) return otherStatusCache[id];
-  if (otherCache[id]) {
-    const st = computeSecurityStatus(otherCache[id].general_info);
-    otherStatusCache[id] = st;
-    return st;
-  }
-  try {
-    const res = await fetch(`data/other_securities/${id}.json`);
-    if (!res.ok) throw new Error('not found');
-    const data = await res.json();
-    otherCache[id] = data; // дараа дарахад дахин татахгүйн тулд бас энд хадгална
-    const st = computeSecurityStatus(data.general_info);
-    otherStatusCache[id] = st;
-    return st;
-  } catch (e) {
-    otherStatusCache[id] = null;
-    return null;
-  }
-}
-
-function renderOtherSecuritiesList(q) {
-  const listEl = document.getElementById('stockList');
-  const countEl = document.getElementById('sbCount');
-
-  if (!otherSecuritiesIndex || !otherSecuritiesIndex[secCategory] || !otherSecuritiesIndex[secCategory].length) {
-    listEl.innerHTML = '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
-    countEl.textContent = '0';
-    return;
-  }
-
-  let list = otherSecuritiesIndex[secCategory];
-  if (q) list = list.filter(c =>
-    (c.symbol || '').toLowerCase().includes(q) || (c.name || '').toLowerCase().includes(q));
-
-  if (!list.length) {
-    listEl.innerHTML = '<div class="empty">Олдсонгүй</div>';
-    countEl.textContent = '0';
-    return;
-  }
-
-  const showsStatus = (secCategory === 'BOND' || secCategory === 'ZGDUTS');
-
-  let html = '';
-  list.forEach(c => {
-    let rightHtml = '';
-    if (showsStatus) {
-      const cached = otherStatusCache[c.id];
-      if (cached !== undefined) {
-        if (cached) rightHtml = `<div class="sr-status ${cached.active ? 'active' : 'inactive'}">${cached.label}</div>`;
-      } else {
-        rightHtml = `<div class="sr-status" id="sr-status-${c.id}"></div>`;
-      }
-    }
-    html += `<div class="stock-row${currentOtherId===c.id?' active':''}" data-id="${c.id}" onclick="loadOtherSecurity(${c.id})">
-      <div><div class="sr-sym">${c.symbol}</div><div class="sr-name">${c.name}</div></div>
-      <div>${rightHtml}</div>
-    </div>`;
-  });
-  listEl.innerHTML = html;
-  countEl.textContent = list.length;
-
-  if (showsStatus) {
-    list.forEach(c => {
-      if (otherStatusCache[c.id] === undefined) {
-        fetchOtherStatus(c.id).then(status => {
-          const el = document.getElementById('sr-status-' + c.id);
-          if (el && status) {
-            el.textContent = status.label;
-            el.classList.add(status.active ? 'active' : 'inactive');
-          }
-        });
-      }
-    });
-  }
-}
-
-function setViewTabsMode(isOther) {
-  document.querySelectorAll('.view-tab.stock-only').forEach(b => {
-    b.classList.toggle('stock-only-hidden', isOther);
-  });
-}
-
-function showOtherView(view) {
-  document.querySelectorAll('.view-tab:not(.stock-only)').forEach(b =>
-    b.classList.toggle('active', b.dataset.view === view));
-  document.getElementById('tabTojim').style.display = 'none';
-  document.getElementById('tabGeneral').style.display = (view === 'general') ? '' : 'none';
-  document.getElementById('tabTradeHist').style.display = (view === 'tradehist') ? '' : 'none';
-  document.getElementById('tabOwnership').style.display = 'none';
-  currentView = view;
-}
-
-async function loadOtherSecurity(id) {
-  currentOtherId = id;
-  currentSym = null; // хувьцааны горимоос гарна
-  document.getElementById('viewTabRow').style.display = 'flex';
-  setViewTabsMode(true);
-  showOtherView('general');
-  document.getElementById('thFilterRow').style.display = 'none';
-  document.querySelectorAll('.stock-row').forEach(el =>
-    el.classList.toggle('active', el.dataset.id === String(id)));
-
-  const rec = (otherSecuritiesIndex[secCategory] || []).find(x => x.id === id);
-  document.getElementById('heroSym').textContent = rec ? rec.symbol : '—';
-  document.getElementById('heroName').textContent = rec ? rec.name : 'Ачаалж байна...';
-  document.getElementById('heroPrice').textContent = '—';
-  document.getElementById('heroChg').style.display = 'none';
-  document.getElementById('heroTags').innerHTML = `<span class="hero-tag">Ачаалж байна...</span>`;
-  document.getElementById('heroLogo').innerHTML = ICON_DOC;
-  document.getElementById('genInfoBody').innerHTML =
-    '<div class="loading" style="height:80px"><div class="spinner"></div></div>';
-  document.getElementById('tradeTable').innerHTML =
-    '<div class="loading" style="height:80px"><div class="spinner"></div></div>';
-
-  // кэшлэгдсэн бол дахин татахгүй
-  if (otherCache[id]) { renderOtherSecurity(id); return; }
-
-  try {
-    const res = await fetch(`data/other_securities/${id}.json`);
-    if (!res.ok) throw new Error('Өгөгдөл олдсонгүй');
-    const data = await res.json();
-    otherCache[id] = data;
-    renderOtherSecurity(id);
-  } catch (e) {
-    document.getElementById('genInfoBody').innerHTML =
-      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
-    document.getElementById('tradeTable').innerHTML =
-      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
-  }
-}
-
-function renderOtherSecurity(id) {
-  const data = otherCache[id];
-  if (!data) return;
-
-  document.getElementById('heroSym').textContent = data.symbol || '—';
-  document.getElementById('heroName').textContent = data.name || '—';
-  document.getElementById('heroLogo').innerHTML = ICON_DOC;
-
-  const status = computeSecurityStatus(data.general_info);
-  document.getElementById('heroTags').innerHTML = status
-    ? `<span class="hero-tag ${status.active ? 'status-active' : 'status-inactive'}">${status.label}</span>`
-    : `<span class="hero-tag">${data.category || secCategory}</span>`;
-
-  document.getElementById('heroPrice').textContent = '—';
-  document.getElementById('heroChg').style.display = 'none';
-
-  document.getElementById('genInfoBody').innerHTML =
-    renderGeneralInfo(data.category, data.general_info);
-
-  renderOtherTradeTable(id, data);
-}
-
-function renderOtherTradeTable(id, data) {
-  const ohlcv = data.ohlcv || [];
-  if (!ohlcv.length) {
-    document.getElementById('tradeTable').innerHTML =
-      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
-    return;
-  }
-  const rows = [...ohlcv].reverse().slice(0, 100);
-  let html = `<table class="hist-tbl"><thead><tr>
-    <th>№</th><th>Огноо</th><th>Нээлт</th><th>Хаалт</th>
-    <th>Дээд / Доод</th><th>Эзлэхүүн</th><th>Үнийн дүн</th><th>Хэлцэл</th>
-  </tr></thead><tbody>`;
-  rows.forEach((r, i) => {
-    const isUp = r.ClosingPrice >= r.OpeningPrice;
-    html += `<tr>
-      <td>${i+1}</td><td>${r.dates}</td>
-      <td>${fmt(r.OpeningPrice)}</td>
-      <td style="color:var(${isUp?'--green':'--red'})">${fmt(r.ClosingPrice)}</td>
-      <td>${fmt(r.HighPrice)} / ${fmt(r.LowPrice)}</td>
-      <td>${fmtNum(r.Volume)}</td>
-      <td>${fmtNum(Math.round(r.Turnover || 0))}</td>
-      <td>${r.Trades || 0}</td>
-    </tr>`;
-  });
-  html += '</tbody></table>';
-  document.getElementById('tradeTable').innerHTML = html;
-  document.getElementById('tradeInfo2').textContent = ohlcv.length + ' арилжааны өдөр';
 }
 
 function updateSidebarRow(sym, price, chgPct) {
@@ -987,31 +619,6 @@ function setCat(cat, btn) {
   renderList();
 }
 
-async function setSecCategory(cat, btn) {
-  secCategory = cat;
-  currentOtherId = null;
-  document.querySelectorAll('.sec-tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('catRow').style.display = (cat === 'STOCK') ? 'flex' : 'none';
-
-  if (cat !== 'STOCK' && !otherSecuritiesIndex) {
-    await loadOtherSecuritiesIndex();
-  }
-  renderList();
-}
-
-async function loadOtherSecuritiesIndex() {
-  document.getElementById('stockList').innerHTML =
-    '<div class="loading" style="height:120px"><div class="spinner"></div></div>';
-  try {
-    const res = await fetch('data/other_securities/index.json');
-    if (!res.ok) throw new Error('index olodsonguii');
-    otherSecuritiesIndex = await res.json();
-  } catch (e) {
-    otherSecuritiesIndex = {};
-  }
-}
-
 // ═══ VIEW TABS (Тойм / Ерөнхий мэдээлэл / Санхүүгийн мэдээлэл) ═══
 function resetToTojimView() {
   currentView = 'tojim';
@@ -1036,11 +643,6 @@ function setView(view, btn) {
   if (view === 'general' && currentSym) {
     loadProfile(currentSym);
   }
-  if (view === 'general' && currentOtherId && otherCache[currentOtherId]) {
-    const d = otherCache[currentOtherId];
-    document.getElementById('genInfoBody').innerHTML =
-      renderGeneralInfo(d.category, d.general_info);
-  }
   if (view === 'tradehist' && currentSym) {
     loadTradeHistTab(currentSym);
   }
@@ -1053,7 +655,6 @@ async function loadProfile(sym) {
   if (profileCache[sym]) { renderProfileGeneral(sym); return; }
   document.getElementById('genInfoBody').innerHTML =
     '<div class="loading" style="height:120px"><div class="spinner"></div></div>';
-  document.getElementById('genSubBody').innerHTML = '<div class="empty">Ачаалж байна...</div>';
   try {
     const res = await fetch(`data/profiles/${sym}.json`);
     if (!res.ok) throw new Error('Профайл олдсонгүй');
@@ -1063,18 +664,8 @@ async function loadProfile(sym) {
   } catch (e) {
     document.getElementById('genInfoBody').innerHTML =
       '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
-    document.getElementById('genSubBody').innerHTML =
-      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
   }
 }
-
-const GENERAL_FIELD_LABELS = [
-  'Байршил хаяг','Утас, Факс','Гүйцэтгэх захирал','И-мэйл','Вэб сайт',
-  'Байгуулагдсан огноо','МХБ-д бүртгүүлсэн огноо','Нийт ажилчдын тоо',
-  'Улсын бүртгэлийн дугаар','Гэрчилгээний дугаар','Бизнесийн чиглэл',
-  'Үйл ажиллагааны чиглэл','Үйл ажиллагааны туслах чиглэл',
-  'Үйл ажиллагааны байдал','ISIN'
-];
 
 async function loadHeroExtraTags(sym) {
   try {
@@ -1203,9 +794,6 @@ const ICON_GLOBE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" s
 const ICON_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
 const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 const ICON_PERSON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
-const ICON_PERCENT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>';
-const ICON_HASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>';
-const ICON_DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
 
 async function loadOwnership(sym) {
   if (profileCache[sym] && tradeinfoCache[sym] !== undefined) { renderOwnership(sym); return; }
@@ -1354,28 +942,6 @@ class KLineDatafeed {
   async searchSymbols() { return []; }
 
   async getHistoryKLineData(symbol, period, from, to) {
-    // ═══ Бонд/ХБҮЦ/Сан/ЗГДҮЦ (raw ohlcv, week/month тусдаа байхгүй) ═══
-    if (symbol.ticker.startsWith('OTH_')) {
-      const id = symbol.ticker.slice(4);
-      const d = otherCache[id];
-      if (!d || !d.ohlcv) return [];
-      return d.ohlcv
-        .filter(r => r.ClosingPrice > 0)
-        .map(r => {
-          const close = r.ClosingPrice;
-          const open  = r.OpeningPrice > 0 ? r.OpeningPrice : close;
-          const high  = r.HighPrice    > 0 ? r.HighPrice    : close;
-          const low   = r.LowPrice     > 0 ? r.LowPrice     : close;
-          return {
-            timestamp: new Date(r.dates).getTime(),
-            open, high: Math.max(open, high, close),
-            low: Math.min(open, low, close),
-            close, volume: r.Volume || 0,
-          };
-        })
-        .sort((a, b) => a.timestamp - b.timestamp);
-    }
-
     const d = cache[symbol.ticker];
     if (!d) return [];
 
@@ -1416,37 +982,6 @@ function symbolInfoFor(sym, co) {
     name: co.name, shortName: sym, ticker: sym,
     priceCurrency: 'mnt', type: 'stock',
   };
-}
-
-function symbolInfoForOther(id, data) {
-  return {
-    exchange: 'MSE', market: 'stocks',
-    name: data.name, shortName: data.symbol, ticker: 'OTH_' + id,
-    priceCurrency: 'mnt', type: 'stock',
-  };
-}
-
-function showKLineChartOther(id, data) {
-  const sInfo = symbolInfoForOther(id, data);
-  if (!klineChart) {
-    klineChart = new klinechartspro.KLineChartPro({
-      container: document.getElementById('chartWrap'),
-      locale: 'en-US',
-      watermark: '',
-      theme: currentTheme,
-      symbol: sInfo,
-      period: { multiplier: 1, timespan: 'day', text: '1D' },
-      periods: [
-        { multiplier: 1, timespan: 'day', text: '1D' },
-      ],
-      datafeed: new KLineDatafeed(),
-      mainIndicators: [],
-      subIndicators: [],
-      styles: CHART_STYLES[currentTheme],
-    });
-  } else {
-    klineChart.setSymbol(sInfo);
-  }
 }
 
 const CHART_STYLES = {
