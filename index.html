@@ -1268,7 +1268,7 @@ function renderFinancials(sym) {
   const periodOptions = periods.map(p =>
       `<option value="${p}"${st.period===p?' selected':''}>${periodLabel(p)}</option>`
     ).join('');
-    const periodSelect = `<select class="th-date" style="font-weight:700;cursor:pointer" onchange="finSetPeriod('${sym}', this.value)">${periodOptions}</select>`;
+    const periodSelect = `<select class="th-date" style="font-weight:700;cursor:pointer;font-size:14px;padding:8px 14px;border-radius:4px;" onchange="finSetPeriod('${sym}', this.value)">${periodOptions}</select>`;
   const periodJson = cache.data[st.period];
   const availStatements = FIN_STATEMENTS.filter(s => periodJson && periodJson[s.key] && periodJson[s.key].length);
   const subTabs = availStatements.map(s =>
