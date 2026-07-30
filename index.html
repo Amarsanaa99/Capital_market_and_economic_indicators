@@ -97,6 +97,7 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
 .sr-status.inactive{color:var(--red);}
 .cat-divider{padding:5px 16px 3px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;background:var(--bg);}
 .content{padding:18px 22px;display:flex;flex-direction:column;gap:14px;}
+#tabTojim{display:flex;flex-direction:column;gap:14px;}
 .hero-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:15px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
 .hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#2563eb);}
 .hero-sym{font-size:22px;font-weight:800;color:var(--navy);font-family:var(--mono);}
@@ -160,10 +161,19 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
 .own-mini-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
 .own-mini-row{padding:9px 14px;font-size:12px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border-lt);}
 .own-mini-row:last-child{border-bottom:none;}
-.stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow);}
+.stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--border);}
+.stat-card.c-blue::before{background:var(--blue);}
+.stat-card.c-green::before{background:var(--green);}
+.stat-card.c-red::before{background:var(--red);}
+.stat-card.c-amber::before{background:#f59e0b;}
 .stat-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
 .stat-val{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text);}
+.stat-val.up{color:var(--green);}
+.stat-val.dn{color:var(--red);}
 .stat-sub{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono);}
+.stat-sub.up{color:var(--green);font-weight:700;}
+.stat-sub.dn{color:var(--red);font-weight:700;}
 .hist-tbl{width:100%;border-collapse:collapse;}
 .hist-tbl th{padding:8px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.9px;border-bottom:1px solid var(--border-lt);background:var(--bg);}
 .hist-tbl td{padding:8px 14px;font-size:12px;border-bottom:1px solid var(--border-lt);font-family:var(--mono);}
@@ -283,14 +293,12 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
     <div class="chart-card" id="chartCard">
       <div id="chartWrap"></div>
     </div>
-
-    <div class="stats-grid">
-      <div class="stat-card"><div class="stat-lbl">Өмнөх Хаалт</div><div class="stat-val" id="stPrev">—</div></div>
-      <div class="stat-card"><div class="stat-lbl">Нээлт / Хаалт</div><div class="stat-val" id="stOC">—</div><div class="stat-sub" id="stOCSub"></div></div>
-      <div class="stat-card"><div class="stat-lbl">Дээд / Доод</div><div class="stat-val" id="stHL">—</div><div class="stat-sub" id="stHLSub"></div></div>
-      <div class="stat-card"><div class="stat-lbl">Эзлэхүүн / Хэлцэл</div><div class="stat-val" id="stVol">—</div><div class="stat-sub" id="stVolSub"></div></div>
+  <div class="stats-grid">
+      <div class="stat-card c-blue"><div class="stat-lbl">Өмнөх Хаалт</div><div class="stat-val" id="stPrev">—</div></div>
+      <div class="stat-card" id="stOCCard"><div class="stat-lbl">Нээлт / Хаалт</div><div class="stat-val" id="stOC">—</div><div class="stat-sub" id="stOCSub"></div></div>
+      <div class="stat-card c-amber"><div class="stat-lbl">Дээд / Доод</div><div class="stat-val" id="stHL">—</div><div class="stat-sub" id="stHLSub"></div></div>
+      <div class="stat-card c-blue"><div class="stat-lbl">Эзлэхүүн / Хэлцэл</div><div class="stat-val" id="stVol">—</div><div class="stat-sub" id="stVolSub"></div></div>
     </div>
-
     </div>
 
     <div id="tabGeneral" style="display:none">
@@ -458,17 +466,26 @@ function render(sym) {
   chgEl.style.display = 'inline-flex';
 
   const last = d.last || {};
-  document.getElementById('stPrev').textContent = fmt(d.prevClose) + '₮';
-  document.getElementById('stOC').textContent = fmt(last.OpeningPrice) + '₮';
-  document.getElementById('stOCSub').textContent = '→ ' + fmt(last.ClosingPrice) + '₮';
-  document.getElementById('stHL').textContent = fmt(last.HighPrice) + '₮';
-  document.getElementById('stHLSub').textContent = '↓ ' + fmt(last.LowPrice) + '₮';
-  document.getElementById('stVol').textContent = fmtNum(last.Volume);
-  document.getElementById('stVolSub').textContent = (last.Trades || 0) + ' хэлцэл';
-
-  showKLineChart(sym);
-}
-
+    document.getElementById('stPrev').textContent = fmt(d.prevClose) + '₮';
+  
+    const ocUp = (last.ClosingPrice >= last.OpeningPrice);
+    document.getElementById('stOC').textContent = fmt(last.OpeningPrice) + '₮';
+    const stOCSub = document.getElementById('stOCSub');
+    stOCSub.textContent = (ocUp ? '↑ ' : '↓ ') + fmt(last.ClosingPrice) + '₮';
+    stOCSub.className = 'stat-sub ' + (ocUp ? 'up' : 'dn');
+    document.getElementById('stOCCard').className = 'stat-card ' + (ocUp ? 'c-green' : 'c-red');
+  
+    const stHL = document.getElementById('stHL');
+    stHL.textContent = fmt(last.HighPrice) + '₮';
+    stHL.className = 'stat-val up';
+    const stHLSub = document.getElementById('stHLSub');
+    stHLSub.textContent = '↓ ' + fmt(last.LowPrice) + '₮';
+    stHLSub.className = 'stat-sub dn';
+  
+    document.getElementById('stVol').textContent = fmtNum(last.Volume);
+    document.getElementById('stVolSub').textContent = (last.Trades || 0) + ' хэлцэл';
+  
+    showKLineChart(sym);
 // ═══════════════════════════════════════════
 // SIDEBAR & TICKER
 // ═══════════════════════════════════════════
@@ -919,10 +936,13 @@ function renderOwnership(sym) {
     </div>
   `;
 }
-
 function resetStats() {
   ['stPrev','stOC','stHL','stVol'].forEach(id => document.getElementById(id).textContent = '—');
   ['stOCSub','stHLSub','stVolSub'].forEach(id => document.getElementById(id).textContent = '');
+  document.getElementById('stHL').className = 'stat-val';
+  document.getElementById('stHLSub').className = 'stat-sub';
+  document.getElementById('stOCSub').className = 'stat-sub';
+  document.getElementById('stOCCard').className = 'stat-card';
 }
 function fmt(n) { return n != null ? Number(n).toLocaleString('mn-MN') : '—'; }
 function fmtNum(n) { return n != null ? Number(n).toLocaleString('mn-MN') : '—'; }
