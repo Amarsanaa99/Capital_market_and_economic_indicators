@@ -1,3 +1,1 @@
-Here's the English version:
-
-> This is a **demo version** of a Mongolian capital markets data platform (sample data for 3-5 companies). The full system contains real-time pricing, financial statements, ownership structure, and macroeconomic indicators for all 162 companies listed on the Mongolian Stock Exchange (MSE), and currently runs in a private environment. Backend scraping/parsing logic is not included in this repository.
+This is a **demo version** of a Mongolian capital markets data platform (sample data for 3-5 companies). The full system contains real-time pricing, financial statements, ownership structure, and macroeconomic indicators for all 162 companies listed on the Mongolian Stock Exchange (MSE), and currently runs in a private environment. Backend scraping/parsing logic is not included in this repository.
