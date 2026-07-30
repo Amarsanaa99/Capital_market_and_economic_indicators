@@ -1239,15 +1239,15 @@ function renderFinancials(sym) {
   const periods = cache.periods;
   const body = document.getElementById('finBody');
   if (!periods.length) { body.innerHTML = '<div class="empty">Мэдээлэл байхгүй</div>'; return; }
-
   const ratiosByPeriod = periods.map(p => ({
     period: p, ...(cache.data[p] ? finExtractRatios(cache.data[p]) : {})
   }));
-  const maxRev = Math.max(1, ...ratiosByPeriod.map(r => Math.abs(r.revenue || 0)));
-  const maxNi  = Math.max(1, ...ratiosByPeriod.map(r => Math.abs(r.netIncome || 0)));
+  const chartPeriods = ratiosByPeriod.slice(-3); // зөвхөн сүүлийн 3 хугацааг chart дээр харуулна
+  const maxRev = Math.max(1, ...chartPeriods.map(r => Math.abs(r.revenue || 0)));
+  const maxNi  = Math.max(1, ...chartPeriods.map(r => Math.abs(r.netIncome || 0)));
 
   let revBars = '', niBars = '';
-  ratiosByPeriod.forEach(r => {
+  chartPeriods.forEach(r => {
     const hRev = r.revenue   != null ? Math.max(4, Math.abs(r.revenue)   / maxRev * 130) : 4;
     const hNi  = r.netIncome != null ? Math.max(4, Math.abs(r.netIncome) / maxNi  * 130) : 4;
     const niColor = (r.netIncome || 0) >= 0 ? 'var(--green)' : 'var(--red)';
