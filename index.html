@@ -240,6 +240,7 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Dark mode">
   <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"></svg>
 </button>
+    <button class="theme-toggle" onclick="toggleLang()" title="Switch language" style="font-size:11px;font-weight:800;">EN</button>
     <div class="live-pill"><div class="live-dot"></div>LIVE</div>
     <span style="font-size:11px;color:var(--text3);font-family:var(--mono)" id="hdr-date"></span>
   </div>
@@ -361,7 +362,60 @@ let currentSym = null;
 let catFilter = 'all';
 let profileCache = {}; // { [sym]: profile json } — 162 хувьцааны data/profiles/{sym}.json
 let currentView = 'tojim';
+// ═══ i18n — Хэлний сонголт ═══
+let currentLang = localStorage.getItem('mp_lang') || 'mn';
 
+const UI_TEXT = {
+  mn: {
+    searchPh: 'Хайх... APU, KHAN...', all:'Бүгд', catI:'I анги', catII:'II анги', catIII:'III анги',
+    selectCo:'Компани сонгоно уу', tabTojim:'Тойм', tabGeneral:'Ерөнхий мэдээлэл',
+    tabFin:'Санхүүгийн мэдээлэл', tabTrade:'Арилжааны түүх', tabOwn:'Хувьцаа эзэмшил',
+    prevClose:'Өмнөх Хаалт', openClose:'Нээлт / Хаалт', highLow:'Дээд / Доод',
+    volTrades:'Эзлэхүүн / Хэлцэл', trades:'хэлцэл', shares:'ширхэг',
+    startDate:'Эхлэх огноо', endDate:'Дуусах огноо', filter:'Шүүх', allBtn:'Бүгд',
+    tradedHistory:'Арилжигдсан түүх', tradingDays:'арилжааны өдөр',
+    noData:'Өгөгдөл байхгүй байна', noInfo:'Одоогоор мэдээлэл байхгүй байна',
+    balanceSheet:'Балансын тайлан', incomeStatement:'Орлогын тайлан',
+    cashFlow:'Мөнгөн гүйлгээ', equityChanges:'Өмчийн өөрчлөлт',
+    noFinData:'Санхүүгийн тайлан одоогоор байхгүй байна',
+  },
+  en: {
+    searchPh: 'Search... APU, KHAN...', all:'All', catI:'Class I', catII:'Class II', catIII:'Class III',
+    selectCo:'Select a company', tabTojim:'Overview', tabGeneral:'General Info',
+    tabFin:'Financials', tabTrade:'Trade History', tabOwn:'Ownership',
+    prevClose:'Prev. Close', openClose:'Open / Close', highLow:'High / Low',
+    volTrades:'Volume / Trades', trades:'trades', shares:'shares',
+    startDate:'Start Date', endDate:'End Date', filter:'Filter', allBtn:'All',
+    tradedHistory:'Trading History', tradingDays:'trading days',
+    noData:'No data available', noInfo:'No information available yet',
+    balanceSheet:'Balance Sheet', incomeStatement:'Income Statement',
+    cashFlow:'Cash Flow', equityChanges:'Changes in Equity',
+    noFinData:'Financial reports not available yet',
+  }
+};
+function t(key) { return UI_TEXT[currentLang][key] || key; }
+
+function toggleLang() {
+  currentLang = currentLang === 'mn' ? 'en' : 'mn';
+  localStorage.setItem('mp_lang', currentLang);
+  document.getElementById('langLabel').textContent = currentLang === 'mn' ? 'EN' : 'MN';
+  applyStaticTranslations();
+  renderList();
+  if (currentSym) { const btn=document.querySelector(`.view-tab[data-view="${currentView}"]`); if(btn) setView(currentView, btn); }
+}
+
+function applyStaticTranslations() {
+  const ph = document.getElementById('searchInput'); if (ph) ph.placeholder = t('searchPh');
+  document.querySelectorAll('#catRow .cat-btn')[0].textContent = t('all');
+  document.querySelectorAll('#catRow .cat-btn')[1].textContent = t('catI');
+  document.querySelectorAll('#catRow .cat-btn')[2].textContent = t('catII');
+  document.querySelectorAll('#catRow .cat-btn')[3].textContent = t('catIII');
+  document.querySelector('.view-tab[data-view="tojim"]').textContent = t('tabTojim');
+  document.querySelector('.view-tab[data-view="general"]').textContent = t('tabGeneral');
+  document.querySelector('.view-tab[data-view="financials"]').textContent = t('tabFin');
+  document.querySelector('.view-tab[data-view="tradehist"]').textContent = t('tabTrade');
+  document.querySelector('.view-tab[data-view="ownership"]').textContent = t('tabOwn');
+}
 let klineChart = null;
 let currentTheme = localStorage.getItem('mp_theme') || 'dark';
 document.documentElement.setAttribute('data-theme', currentTheme);
@@ -1328,6 +1382,7 @@ function renderFinancials(sym) {
   `;
 }
 applyTheme(currentTheme);
+applyStaticTranslations();
 init();
 </script>
 </body>
