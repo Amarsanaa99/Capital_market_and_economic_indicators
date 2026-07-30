@@ -1,1 +1,1554 @@
-ыбс
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MarketPulse</title>
+<script src="vendor/klinecharts/klinecharts.min.js"></script>
+<script src="vendor/klinecharts/klinecharts-pro.umd.js"></script>
+<link rel="stylesheet" href="vendor/klinecharts/klinecharts-pro.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --white:#fff;--bg:#f5f7fc;--navy:#04163a;--navy2:#082a6b;
+  --blue:#1552f0;--blue-lt:#dbeafe;--blue-xlt:#eff4ff;
+  --border:#d6dff2;--border-lt:#e8edf8;
+  --text:#0b1d3a;--text2:#475e87;--text3:#8496b8;
+  --green:#059669;--green-bg:#d1fae5;
+  --red:#dc2626;--red-bg:#fee2e2;
+  --shadow:0 1px 4px rgba(4,22,58,.07);
+  --shadow-md:0 4px 16px rgba(4,22,58,.10);
+  --mono:'Manrope',sans-serif;
+  --sans:'Manrope',sans-serif;
+  --r:10px;
+}
+[data-theme="dark"]{
+  --white:#141a2e;--bg:#030a1f;--navy:#eef2fc;--navy2:#4d7cff;
+  --blue:#4d7cff;--blue-lt:#1c2a4a;--blue-xlt:#141d33;
+  --border:#242f4a;--border-lt:#1b243b;
+  --text:#dde4f5;--text2:#8f9ec2;--text3:#5d6c8f;
+  --green:#22c55e;--green-bg:rgba(34,197,94,.15);
+  --red:#f87171;--red-bg:rgba(248,113,113,.15);
+  --shadow:0 1px 4px rgba(0,0,0,.35);
+  --shadow-md:0 4px 16px rgba(0,0,0,.45);
+}
+[data-theme="dark"] body{background:var(--bg);}
+[data-theme="dark"] .logo-mark svg{stroke:#fff;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.5;}
+.topbar{background:var(--navy);color:#8aafd8;font-size:11px;padding:0 24px;height:32px;display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);}
+.tb-left{display:flex;gap:20px;}
+.tb-item .lbl{color:#4d7aaa;font-size:10px;text-transform:uppercase;letter-spacing:.5px;margin-right:5px;}
+.tb-item .val{color:#cce0ff;font-weight:500;}
+.tb-sep{width:1px;height:12px;background:#1a3460;display:inline-block;margin:0 4px;vertical-align:middle;}
+header{background:var(--white);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:300;box-shadow:0 2px 8px rgba(4,22,58,.05);}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.logo-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--blue),var(--navy2));border-radius:8px;display:flex;align-items:center;justify-content:center;}
+.logo-mark svg{width:17px;height:17px;}
+.logo-name{font-size:16px;font-weight:800;color:var(--navy);letter-spacing:-.4px;}
+.logo-name span{color:var(--blue);}
+.live-pill{display:flex;align-items:center;gap:5px;background:var(--green-bg);color:var(--green);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;}
+.live-dot{width:6px;height:6px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.4;}}
+.ticker-bar{background:var(--white);border-bottom:2px solid var(--border);height:36px;overflow:hidden;display:flex;align-items:center;}
+.ticker-track{display:flex;animation:ticker 400s linear infinite;white-space:nowrap;}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ti{display:inline-flex;align-items:center;gap:6px;padding:0 20px;border-right:1px solid var(--border-lt);height:36px;font-size:12px;}
+.ti-sym{font-weight:700;color:var(--navy);font-family:var(--mono);font-size:11px;}
+.ti-price{color:var(--text);font-family:var(--mono);}
+.ti-chg{font-family:var(--mono);font-size:11px;font-weight:600;}
+.up{color:var(--green);} .dn{color:var(--red);}
+.layout{display:grid;grid-template-columns:270px 1fr;min-height:calc(100vh - 124px);}
+.sidebar{background:var(--white);border-right:1px solid var(--border);overflow-y:auto;position:sticky;top:88px;max-height:calc(100vh - 88px);}
+.sb-head{padding:13px 16px 10px;border-bottom:1px solid var(--border-lt);display:flex;align-items:center;justify-content:space-between;}
+.sb-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1.2px;}
+.sb-badge{font-size:11px;background:var(--blue-lt);color:var(--blue);border-radius:10px;padding:1px 8px;font-weight:700;font-family:var(--mono);}
+.sb-search{padding:9px 12px;border-bottom:1px solid var(--border-lt);}
+.sb-input{width:100%;padding:6px 10px 6px 30px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;color:var(--text);font-family:var(--sans);outline:none;transition:border-color .15s;background:var(--bg) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='13' height='13' viewBox='0 0 24 24' fill='none' stroke='%238496b8' stroke-width='2.2'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E") 9px center no-repeat;}
+.sb-input:focus{border-color:var(--blue);background-color:var(--white);}
+.sec-tab-row{display:flex;padding:8px 12px 0;gap:3px;border-bottom:1px solid var(--border-lt);flex-wrap:wrap;}
+.sec-tab{padding:5px 11px;border-radius:7px 7px 0 0;font-size:11px;font-weight:700;color:var(--text2);cursor:pointer;border:1.5px solid var(--border);border-bottom:2px solid transparent;background:var(--bg);transition:all .15s;font-family:var(--sans);}
+.sec-tab:hover{color:var(--blue);}
+.sec-tab.active{background:var(--white);color:var(--blue);border-color:var(--border);border-bottom-color:var(--white);margin-bottom:-1px;}
+.cat-row{display:flex;padding:7px 12px;gap:4px;border-bottom:1px solid var(--border-lt);}
+.content > .sec-tab-row{border-bottom:none;padding:0;gap:6px;}
+.content > .sec-tab-row .sec-tab{border-radius:8px;border:1.5px solid var(--border);}
+.content > .sec-tab-row .sec-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.view-tab-row{display:flex;gap:6px;padding:0;}
+.view-tab{padding:6px 14px;border-radius:8px;border:1.5px solid var(--border);background:var(--white);color:var(--text2);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.view-tab:hover{color:var(--blue);border-color:var(--blue);}
+.view-tab.active{background:var(--blue);color:#fff;border-color:var(--blue);}
+.view-tab.disabled{opacity:.45;cursor:not-allowed;}
+.view-tab.stock-only-hidden{display:none;}
+.hero-tag.status-active{color:var(--green);}
+.hero-tag.status-inactive{color:var(--red);}
+.view-tab.disabled:hover{color:var(--text2);border-color:var(--border);}
+.sub-tab-row{display:flex;gap:4px;padding:2px 0;}
+.sub-tab{padding:4px 11px;border-radius:12px;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;border:1.5px solid var(--border);background:var(--white);transition:all .15s;}
+.sub-tab.active{background:var(--blue-lt);color:var(--blue);border-color:var(--blue);}
+.th-filter-row{display:flex;align-items:center;gap:8px;padding:10px 18px;border-bottom:1px solid var(--border-lt);flex-wrap:wrap;}
+.th-lbl{font-size:11px;color:var(--text3);font-weight:600;}
+.th-date{padding:5px 9px;border:1.5px solid var(--border);border-radius:7px;font-size:12px;font-family:var(--mono);color:var(--text);background:var(--white);}
+.th-btn{padding:5px 13px;border-radius:7px;border:1.5px solid var(--blue);background:var(--blue);color:#fff;font-size:12px;font-weight:700;cursor:pointer;}
+.th-btn-clear{background:var(--white);color:var(--blue);}
+.cat-btn{padding:3px 10px;border-radius:12px;font-size:11px;font-weight:600;color:var(--text2);cursor:pointer;border:1.5px solid var(--border);background:var(--white);transition:all .15s;font-family:var(--sans);}
+.cat-btn.active{background:var(--blue);color:white;border-color:var(--blue);}
+.stock-row{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;cursor:pointer;transition:background .1s;border-left:3px solid transparent;}
+.stock-row:hover{background:var(--bg);}
+.stock-row.active{background:var(--blue-xlt);border-left-color:var(--blue);}
+.sr-sym{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--navy);}
+.sr-name{font-size:11px;color:var(--text3);margin-top:1px;max-width:148px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.sr-price{font-family:var(--mono);font-size:12px;color:var(--text);text-align:right;}
+.sr-chg{font-family:var(--mono);font-size:10px;margin-top:1px;text-align:right;}
+.sr-status{font-size:10px;font-weight:700;font-family:var(--mono);text-transform:uppercase;letter-spacing:.3px;text-align:right;}
+.sr-status.active{color:var(--green);}
+.sr-status.inactive{color:var(--red);}
+.cat-divider{padding:5px 16px 3px;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;background:var(--bg);}
+.content{padding:18px 22px;display:flex;flex-direction:column;gap:14px;}
+.hero-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:15px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:var(--shadow);position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),#2563eb);}
+.hero-sym{font-size:22px;font-weight:800;color:var(--navy);font-family:var(--mono);}
+.hero-title-row{display:flex;align-items:baseline;gap:9px;flex-wrap:wrap;margin-bottom:6px;}
+.hero-name{font-size:18px;color:var(--text2);font-weight:500;}
+.hero-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.hero-tag{font-size:13px;font-weight:600;color:var(--text2);font-family:var(--mono);text-transform:uppercase;letter-spacing:.4px;position:relative;padding-left:14px;}
+.hero-tag:first-child{padding-left:0;}
+.hero-tag:first-child::before{content:none;}
+.hero-tag::before{content:'·';position:absolute;left:4px;top:50%;transform:translateY(-50%);color:var(--text3);font-weight:400;}
+.hero-logo{width:44px;height:44px;border-radius:10px;border:1px solid var(--border);color:var(--blue);background:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px;font-family:var(--mono);flex-shrink:0;overflow:hidden;}
+
+.info-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;box-shadow:var(--shadow);}
+.info-tags{display:flex;gap:6px;margin-bottom:16px;flex-wrap:wrap;}
+.info-tag{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;background:var(--blue-xlt);color:var(--blue);font-family:var(--sans);}
+.info-tag.status-ok{background:var(--green-bg);color:var(--green);}
+.info-tag.status-bad{background:var(--red-bg);color:var(--red);}
+.info-tag.status-bad{background:var(--red-bg);color:var(--red);}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;}
+.info-item{display:flex;align-items:flex-start;gap:10px;}
+.info-item.full{grid-column:1/-1;}
+.info-icon{width:30px;height:30px;border-radius:8px;background:var(--blue-xlt);color:var(--blue);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.info-icon svg{width:15px;height:15px;}
+.info-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px;}
+.info-value{font-size:13px;color:var(--text);font-weight:600;line-height:1.4;word-break:break-word;}
+.info-value a{color:var(--blue);text-decoration:none;}
+.info-value a:hover{text-decoration:underline;}
+.info-divider{height:1px;background:var(--border-lt);margin:18px 0;}
+.info-meta-row{display:flex;gap:8px;flex-wrap:wrap;}
+.info-meta-chip{font-size:11px;color:var(--text2);background:var(--bg);border:1px solid var(--border-lt);border-radius:7px;padding:5px 10px;font-family:var(--mono);}
+.hero-price{font-size:34px;font-weight:800;color:var(--text);font-family:var(--mono);text-align:right;}
+.hero-chg{font-family:var(--mono);font-size:13px;margin-top:5px;display:inline-flex;padding:3px 11px;border-radius:20px;}
+.hero-chg.up{background:var(--green-bg);color:var(--green);}
+.hero-chg.dn{background:var(--red-bg);color:var(--red);}
+.toolbar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.period-btns,.type-btns{display:flex;gap:3px;}
+.pb,.tb2{padding:5px 13px;border-radius:6px;border:1.5px solid var(--border);background:var(--white);color:var(--text2);font-size:12px;font-weight:600;font-family:var(--mono);cursor:pointer;transition:all .15s;}
+.pb.active{background:var(--blue);border-color:var(--blue);color:white;}
+.tb2.active{background:var(--blue-lt);border-color:var(--blue);color:var(--blue);}
+.vol-lbl{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text3);cursor:pointer;}
+.vol-lbl input{accent-color:var(--blue);}
+.chart-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:visible;box-shadow:var(--shadow);}
+.trade-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}.card-head{padding:12px 18px;border-bottom:1px solid var(--border-lt);display:flex;align-items:center;justify-content:space-between;}
+.card-title{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;}
+.range-lbl{font-size:11px;color:var(--text3);font-family:var(--mono);}
+#navWrap{height:80px;padding:0;position:relative;border-bottom:1px solid var(--border-lt);overflow:hidden;}
+#chartWrap{height:560px;padding:0;position:relative;border-radius:var(--r);overflow:hidden;}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+.own-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:12px;}
+.own-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);}
+.own-stats{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.own-stat{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:14px 16px;box-shadow:var(--shadow);}
+.own-stat .stat-val{font-size:21px;}
+.own-legend{display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--text);font-weight:600;}
+.own-legend .dot{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:4px;}
+.own-icon{width:26px;height:26px;border-radius:8px;background:var(--blue-xlt);color:var(--blue);display:inline-flex;align-items:center;justify-content:center;margin-right:8px;flex-shrink:0;}
+.own-icon svg{width:15px;height:15px;}
+.own-title{display:flex;align-items:center;font-size:13px;font-weight:700;color:var(--text);margin-bottom:14px;}
+.own-avatar{width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;margin-right:10px;flex-shrink:0;}
+.own-hist-toggle{padding:8px 14px;border-top:1px solid var(--border-lt);font-size:11px;color:var(--text3);cursor:pointer;}
+.own-two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.own-mini-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;box-shadow:var(--shadow);}
+.own-mini-row{padding:9px 14px;font-size:12px;display:flex;justify-content:space-between;border-bottom:1px solid var(--border-lt);}
+.own-mini-row:last-child{border-bottom:none;}
+.stat-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:15px 17px;box-shadow:var(--shadow);}
+.stat-lbl{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;}
+.stat-val{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--text);}
+.stat-sub{font-size:11px;color:var(--text3);margin-top:3px;font-family:var(--mono);}
+.hist-tbl{width:100%;border-collapse:collapse;}
+.hist-tbl th{padding:8px 14px;text-align:left;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.9px;border-bottom:1px solid var(--border-lt);background:var(--bg);}
+.hist-tbl td{padding:8px 14px;font-size:12px;border-bottom:1px solid var(--border-lt);font-family:var(--mono);}
+.hist-tbl tr:last-child td{border-bottom:none;}
+.hist-tbl tr:hover td{background:var(--bg);}
+.loading{height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;color:var(--text3);font-size:13px;}
+.spinner{width:26px;height:26px;border:2.5px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .65s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.empty{padding:32px;text-align:center;color:var(--text3);}
+::-webkit-scrollbar{width:5px;}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
+/* ═══ KLineChart Pro — MarketPulse загварт тохируулах ═══ */
+.klinecharts-pro{
+  --klinecharts-pro-primary-color: var(--blue);
+  --klinecharts-pro-hover-background-color: var(--blue-xlt);
+  --klinecharts-pro-background-color: var(--white);
+  --klinecharts-pro-popover-background-color: var(--white);
+  --klinecharts-pro-text-color: var(--text);
+  --klinecharts-pro-text-second-color: var(--text3);
+  --klinecharts-pro-border-color: var(--border-lt);
+  --klinecharts-pro-selected-color: var(--blue-lt);
+  font-family: var(--sans);
+  height: 100%;
+}
+.klinecharts-pro-period-bar .symbol{
+  font-family: var(--mono);
+  font-weight: 700;
+}
+.klinecharts-pro-period-bar .period{
+  font-family: var(--mono);
+  font-weight: 600;
+}
+.theme-toggle{
+  width:30px;height:30px;border-radius:8px;
+  border:1.5px solid var(--border);background:var(--white);
+  color:var(--text2);font-size:14px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;
+}
+.theme-toggle:hover{border-color:var(--blue);color:var(--blue);}
+[data-theme="dark"] #chartWrap{
+  background-color: var(--bg) !important;
+}
+[data-theme="dark"] .klinecharts-pro-period-bar,
+[data-theme="dark"] .klinecharts-pro-drawing-bar,
+[data-theme="dark"] .klinecharts-pro-toolbar{
+  background-color: #0f0f0f !important;
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="tb-left">
+    <span class="tb-item"><span class="lbl">МХБ</span><span class="val">Монголын Хөрөнгийн Зах Зээл</span></span>
+  </div>
+  <span style="font-size:10px;color:#4d7aaa" id="tb-date"></span>
+</div>
+
+<header>
+  <a class="logo" href="#">
+    <div class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><polyline points="3,18 8,12 13,15 21,5" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div><div class="logo-name">МХЗ<span>.mn</span></div></div>
+  </a>
+  <div style="display:flex;align-items:center;gap:12px;">
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()" title="Dark mode">
+  <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"></svg>
+</button>
+    <div class="live-pill"><div class="live-dot"></div>LIVE</div>
+    <span style="font-size:11px;color:var(--text3);font-family:var(--mono)" id="hdr-date"></span>
+  </div>
+</header>
+
+<div class="ticker-bar">
+  <div class="ticker-track" id="tickerTrack">
+    <span class="ti"><span class="ti-sym">Ачааллаж байна...</span></span>
+  </div>
+</div>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="sb-head">
+      <span class="sb-title">Хувьцаа</span>
+      <span class="sb-badge" id="sbCount">—</span>
+    </div>
+    <div class="sb-search">
+      <input class="sb-input" id="searchInput" placeholder="Хайх... APU, KHAN..." oninput="renderList()">
+    </div>
+    <div class="cat-row" id="catRow">
+      <button class="cat-btn active" onclick="setCat('all',this)">Бүгд</button>
+      <button class="cat-btn" onclick="setCat('I',this)">I анги</button>
+      <button class="cat-btn" onclick="setCat('II',this)">II анги</button>
+      <button class="cat-btn" onclick="setCat('III',this)">III анги</button>
+    </div>
+    <div id="stockList"><div class="loading" style="height:200px"><div class="spinner"></div></div></div>
+  </aside>
+
+  <main class="content">
+    <div class="sec-tab-row" id="secTabRow">
+      <button class="sec-tab active" data-sec="STOCK" onclick="setSecCategory('STOCK',this)">Хувьцаа</button>
+      <button class="sec-tab" data-sec="BOND" onclick="setSecCategory('BOND',this)">Бонд</button>
+      <button class="sec-tab" data-sec="HBUC" onclick="setSecCategory('HBUC',this)">ХБҮЦ</button>
+      <button class="sec-tab" data-sec="SAN" onclick="setSecCategory('SAN',this)">Сан</button>
+      <button class="sec-tab" data-sec="ZGDUTS" onclick="setSecCategory('ZGDUTS',this)">ЗГДҮЦ</button>
+    </div>
+    <div class="hero-card">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <div class="hero-logo" id="heroLogo">—</div>
+        <div>
+          <div class="hero-title-row">
+            <span class="hero-sym" id="heroSym">—</span>
+            <span class="hero-name" id="heroName">Компани сонгоно уу</span>
+          </div>
+          <div class="hero-tags" id="heroTags"></div>
+        </div>
+      </div>
+      <div style="text-align:right;align-self:flex-start;">
+        <div class="hero-price" id="heroPrice">—</div>
+        <div class="hero-chg" id="heroChg" style="display:none"></div>
+      </div>
+    </div>
+
+    <div class="view-tab-row" id="viewTabRow" style="display:none">
+      <button class="view-tab active stock-only" data-view="tojim" onclick="setView('tojim',this)">Тойм</button>
+      <button class="view-tab" data-view="general" onclick="setView('general',this)">Ерөнхий мэдээлэл</button>
+      <button class="view-tab disabled stock-only" data-view="financials" onclick="return false;" title="Тун удахгүй">Санхүүгийн мэдээлэл</button>
+      <button class="view-tab" data-view="tradehist" onclick="setView('tradehist',this)">Арилжааны түүх</button>
+      <button class="view-tab stock-only" data-view="ownership" onclick="setView('ownership',this)">Хувьцаа эзэмшил</button>
+    </div>
+
+    <div id="tabTojim">
+    <div class="chart-card" id="chartCard">
+      <div id="chartWrap"></div>
+    </div>
+
+    <div class="trade-card" id="otherInfoCard" style="display:none">
+      <div class="card-head">
+        <span class="card-title">Ерөнхий мэдээлэл</span>
+      </div>
+      <div id="otherInfoBody"></div>
+    </div>  
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-lbl">Өмнөх Хаалт</div><div class="stat-val" id="stPrev">—</div></div>
+      <div class="stat-card"><div class="stat-lbl">Нээлт / Хаалт</div><div class="stat-val" id="stOC">—</div><div class="stat-sub" id="stOCSub"></div></div>
+      <div class="stat-card"><div class="stat-lbl">Дээд / Доод</div><div class="stat-val" id="stHL">—</div><div class="stat-sub" id="stHLSub"></div></div>
+      <div class="stat-card"><div class="stat-lbl">Эзлэхүүн / Хэлцэл</div><div class="stat-val" id="stVol">—</div><div class="stat-sub" id="stVolSub"></div></div>
+    </div>
+
+    </div>
+
+    <div id="tabGeneral" style="display:none">
+      <div class="trade-card" id="genInfoCard">
+        <div id="genInfoBody"><div class="loading" style="height:120px"><div class="spinner"></div></div></div>
+      </div>
+    </div>
+
+    <div id="tabTradeHist" style="display:none">
+      <div class="trade-card">
+        <div class="card-head">
+          <span class="card-title">Арилжигдсан түүх</span>
+          <span class="range-lbl" id="tradeInfo2"></span>
+        </div>
+        <div class="th-filter-row" id="thFilterRow">
+          <label class="th-lbl">Эхлэх огноо</label>
+          <input type="date" class="th-date" id="thStartDate">
+          <label class="th-lbl">Дуусах огноо</label>
+          <input type="date" class="th-date" id="thEndDate">
+          <button class="th-btn" onclick="applyTradeHistFilter()">Шүүх</button>
+          <button class="th-btn th-btn-clear" onclick="clearTradeHistFilter()">Бүгд</button>
+        </div>
+        <div id="tradeTable"><div class="empty">Компани сонгоно уу</div></div>
+      </div>
+    </div>
+
+    <div id="tabOwnership" style="display:none">
+      <div id="ownershipBody"><div class="empty">Компани сонгоно уу</div></div>
+    </div>
+  </main>
+</div>
+
+<script>
+const COMPANIES = [
+  // I АНГИЛАЛ
+  {id:90,sym:'APU',name:'АПУ ХК',cat:'I'},
+  {id:548,sym:'AIC',name:'Ард Даатгал ХК',cat:'I'},
+  {id:550,sym:'ADB',name:'Ард кредит ББСБ ХК',cat:'I'},
+  // II АНГИЛАЛ
+  {id:543,sym:'ITLS',name:'Айтүүлс ХК',cat:'II'},
+  {id:191,sym:'EER',name:'Ариг гал ХК',cat:'II'},
+  {id:17,sym:'ATR',name:'Атар-Өргөө ХК',cat:'II'},
+  // III АНГИЛАЛ
+  {id:369,sym:'AAR',name:'Авто зам ХК',cat:'III'},
+  {id:452,sym:'AOI',name:'Авто импекс ХК',cat:'III'},
+  {id:461,sym:'ADL',name:'Адуун чулуун ХК',cat:'III'},
+];
+
+const SPLIT_MARKS = {
+  'APU':  [{'date':'2008-07-15','label':'S 1:1000'},{'date':'2016-06-20','label':'S 1:10'}],
+  'SUU':  [{'date':'2005-06-15','label':'S 1:100'}, {'date':'2016-06-20','label':'S 1:1000'}],
+  'BUK':  [{'date':'2008-09-23','label':'S 1:10'}],
+  'JLT':  [{'date':'2007-09-19','label':'S 1:1000'}],
+  'GOV':  [{'date':'2007-08-08','label':'S 1:20'}],
+  'DZG':  [{'date':'2009-02-02','label':'S 1:10'}],
+  'TUS':  [{'date':'2008-07-04','label':'S 1:100'}],
+  'ADU':  [{'date':'2023-04-04','label':'S 1:177'}],
+  'MBG':  [{'date':'2009-02-02','label':'S 1:10'}],
+  'AMT':  [{'date':'2011-10-19','label':'S 1:100'}],
+};
+
+let cache = {};
+let currentSym = null;
+let catFilter = 'all';
+let secCategory = 'STOCK';
+let otherSecuritiesIndex = null;
+let currentOtherId = null;
+let otherCache = {}; // { [id]: {symbol,name,category,general_info,ohlcv,trading_info} }
+let profileCache = {}; // { [sym]: profile json } — 162 хувьцааны data/profiles/{sym}.json
+let currentView = 'tojim';
+let currentGenSub = 'shareholders';
+
+const GENERAL_INFO_FIELDS = {
+  BOND: [
+    ['Үнэт цаас гаргагч', 'Үнэт цаас гаргагч'],
+    ['Байгуулагдсан огноо', 'Байгуулагдсан огноо'],
+    ['Улсын бүртгэлийн дугаар', 'Улсын бүртгэлийн дугаар'],
+    ['Байршил хаяг', 'Байршил хаяг'],
+    ['Утас', 'Утас'],
+    ['И-мэйл', 'И-мэйл'],
+    ['Үйл ажиллагааны чиглэл', 'Үйл ажиллагааны чиглэл'],
+    ['Хүү (%)', 'Хүү'],
+    ['Нэрлэсэн үнэ', 'Нэрлэсэн үнэ'],
+    ['Бондын тоо ширхэг', 'Бондын тоо ширхэг'],
+    ['Буцаан төлөгдөх хугацаа', 'Буцаан төлөгдөх хугацаа'],
+    ['Бондын ангилал', 'Бондын ангилал'],
+    ['Арилжааны огноо', 'Арилжааны огноо'],
+    ['Дуусах огноо', 'Дуусах огноо'],
+    ['Валют', 'Валют'],
+    ['Андеррайтерийн нэр', 'Андеррайтерийн нэр'],
+    ['Андеррайтерийн холбогдох утас', 'Андеррайтерийн холбогдох утас'],
+  ],
+  HBUC: [
+    ['Үүсгэн байгуулагч', 'Үүсгэн байгуулагч'],
+    ['Үнэт цаас гаргагч', 'Үнэт цаас гаргагч'],
+    ['Байгуулагдсан огноо', 'Байгуулагдсан огноо'],
+    ['Улсын бүртгэлийн дугаар', 'Улсын бүртгэлийн дугаар'],
+    ['Үйл ажиллагааны чиглэл', 'Үйл ажиллагааны чиглэл'],
+    ['Байршил хаяг', 'Байршил хаяг'],
+    ['Утас', 'Утас'],
+    ['Факс', 'Факс'],
+    ['И-мэйл', 'И-мэйл'],
+    ['Хүү', 'Хүү'],
+    ['Нэрлэсэн үнэ', 'Нэрлэсэн үнэ'],
+    ['Тоо ширхэг', 'Тоо ширхэг'],
+    ['Хүү төлөгдөх нөхцөл', 'Хүү төлөгдөх нөхцөл'],
+    ['Үндсэн төлбөрийн нөхцөл', 'Үндсэн төлбөрийн нөхцөл'],
+    ['Арилжааны огноо', 'Арилжааны огноо'],
+    ['Буцаан төлөгдөх хугацаа', 'Буцаан төлөгдөх хугацаа'],
+    ['Хөрөнгө итгэмжлэн удирдагч', 'Хөрөнгө итгэмжлэн удирдагч'],
+    ['Холбоо барих мэдээлэл', 'Хөрөнгө итгэмжлэн удирдагчийн холбоо барих мэдээлэл'],
+    ['ISIN', 'ISIN'],
+  ],
+  SAN: [
+    ['Сангийн оноосон нэр', 'Сангийн оноосон нэр'],
+    ['Сангийн үүсгэн байгуулагч', 'Сангийн үүсгэн байгуулагч'],
+    ['Байгуулагдсан огноо', 'Сангийн үүсгэн байгуулагдсан огноо'],
+    ['Улсын бүртгэлийн гэрчилгээ', 'Улсын бүртгэлийн гэрчилгээний дугаар'],
+    ['Регистрийн дугаар', 'Регистрийн дугаар'],
+    ['МХБ-д бүртгүүлсэн огноо', 'МХБ-д бүртгүүлсэн огноо'],
+    ['Байршил хаяг', 'Байршил хаяг'],
+    ['Утас', 'Утас'],
+    ['И-мэйл', 'И-мэйл'],
+    ['Хэлбэр', 'Хөрөнгө оруулалтын сангийн хэлбэр'],
+    ['Хэрэгслүүд', 'Хөрөнгө оруулалтын хэрэгслүүд'],
+  ],
+  ZGDUTS: [
+    ['Үнэт цаас гаргагч', 'Үнэт цаас гаргагч'],
+    ['Хүү (%)', 'Хүү'],
+    ['Нэрлэсэн үнэ', 'Нэрлэсэн үнэ'],
+    ['Бондын тоо ширхэг', 'Бондын тоо ширхэг'],
+    ['Хүү төлөгдөх давтамж', 'Хүү төлөгдөх давтамж'],
+    ['Арилжааны огноо', 'Арилжааны огноо'],
+    ['Дуусах огноо', 'Дуусах огноо'],
+    ['Валют', 'Валют'],
+  ],
+};
+
+function parseFlexibleDate(str) {
+  if (!str) return null;
+  const m = String(str).trim().match(/(\d{4})[.\-\/](\d{1,2})[.\-\/](\d{1,2})/);
+  if (!m) return null;
+  return new Date(+m[1], +m[2] - 1, +m[3]);
+}
+
+function computeSecurityStatus(generalInfo) {
+  if (!generalInfo) return null;
+  const endStr = generalInfo['Дуусах огноо'];
+  if (!endStr) return null;
+  const endDate = parseFlexibleDate(endStr);
+  if (!endDate || isNaN(endDate.getTime())) return null;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return endDate >= today
+    ? { active: true, label: 'Идэвхтэй' }
+    : { active: false, label: 'Идэвхгүй' };
+}
+
+function iconForFieldKey(key) {
+  const k = key.toLowerCase();
+  if (k.includes('огноо')) return ICON_CALENDAR;
+  if (k.includes('хаяг')) return ICON_PIN;
+  if (k.includes('утас') || k.includes('факс')) return ICON_PHONE;
+  if (k.includes('мэйл')) return ICON_MAIL;
+  if (k.includes('вэб')) return ICON_GLOBE;
+  if (k.includes('хүү') || k.includes('үнэ') || k.includes('дүн')) return ICON_PERCENT;
+  if (k.includes('захирал') || k.includes('итгэмжлэн') || k.includes('андеррайтер') || k.includes('гаргагч') || k.includes('байгуулагч')) return ICON_PERSON;
+  return ICON_HASH;
+}
+
+function isMetaField(key) {
+  const k = key.toLowerCase();
+  return k.includes('дугаар') || k.includes('isin') || k.includes('гэрчилгээ');
+}
+
+function renderGeneralInfo(category, generalInfo) {
+  if (!generalInfo || Object.keys(generalInfo).length === 0) {
+    return '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+  }
+  const fields = GENERAL_INFO_FIELDS[category] || [];
+
+  let itemsHtml = '';
+  let metaChips = '';
+  fields.forEach(([label, key]) => {
+    const val = generalInfo[key];
+    if (val === undefined || val === null || val === '') return;
+    if (isMetaField(key)) {
+      metaChips += `<span class="info-meta-chip">${label}: ${val}</span>`;
+      return;
+    }
+    const isAddress = key.toLowerCase().includes('хаяг');
+    itemsHtml += `
+    <div class="info-item${isAddress ? ' full' : ''}">
+      <div class="info-icon">${iconForFieldKey(key)}</div>
+      <div>
+        <div class="info-label">${label}</div>
+        <div class="info-value">${val}</div>
+      </div>
+    </div>`;
+  });
+
+  if (!itemsHtml && !metaChips) {
+    return '<div class="info-card"><div class="empty">Одоогоор мэдээлэл байхгүй байна</div></div>';
+  }
+
+  return `
+    <div class="info-card">
+      <div class="info-grid">${itemsHtml}</div>
+      ${metaChips ? `<div class="info-divider"></div><div class="info-meta-row">${metaChips}</div>` : ''}
+    </div>`;
+}
+let klineChart = null;
+let currentTheme = localStorage.getItem('mp_theme') || 'light';
+document.documentElement.setAttribute('data-theme', currentTheme);
+
+// ═══════════════════════════════════════════
+// INIT — summary.json-аас бүх үнэ урьдчилан ачаална
+// ═══════════════════════════════════════════
+async function init() {
+  const ds = new Date().toLocaleDateString('mn-MN',{year:'numeric',month:'long',day:'numeric'});
+  document.getElementById('hdr-date').textContent = ds;
+  document.getElementById('tb-date').textContent = ds;
+  renderList();
+
+  // summary.json татаж sidebar + ticker шинэчлэх
+  try {
+    const res = await fetch('data/summary.json');
+    if (res.ok) {
+      const s = await res.json();
+      s.stocks.forEach(st => {
+        cache[st.sym] = {
+          histories: null, // дараа lazy load хийнэ
+          lastPrice: st.lastPrice,
+          prevClose: st.prevClose,
+          chgVal: st.chgVal,
+          chgPct: st.chgPct,
+          last: { OpeningPrice:st.open, ClosingPrice:st.lastPrice,
+                  HighPrice:st.high, LowPrice:st.low,
+                  Volume:st.volume, Trades:st.trades },
+          summaryOnly: true
+        };
+      });
+      renderList();
+      buildTickerFromSummary(s.stocks);
+    }
+  } catch(e) {}
+
+  await loadStock('APU');
+}
+
+// ═══════════════════════════════════════════
+// LOAD STOCK — data/SYM.json-аас татна
+// ═══════════════════════════════════════════
+async function loadStock(sym) {
+  const co = COMPANIES.find(c => c.sym === sym);
+  if (!co) return;
+  currentSym = sym;
+  currentOtherId = null;
+  document.getElementById('chartCard').style.display = '';
+  document.getElementById('otherInfoCard').style.display = 'none';
+  document.getElementById('viewTabRow').style.display = 'flex';
+  setViewTabsMode(false);
+  document.getElementById('thFilterRow').style.display = 'flex';
+  resetToTojimView();
+
+  document.getElementById('heroSym').textContent = sym;
+  document.getElementById('heroName').textContent = co.name;
+  document.getElementById('heroPrice').textContent = '—';
+  document.getElementById('heroChg').style.display = 'none';
+  document.getElementById('heroTags').innerHTML =
+    `<span class="hero-tag">${co.cat} ангилал</span><span class="hero-tag">МХБ</span>`;
+  document.getElementById('heroLogo').innerHTML =
+    `<img src="data/logos/${sym}.png" style="width:100%;height:100%;border-radius:8px;object-fit:contain" onerror="this.parentElement.textContent='${sym}'">`;
+  loadHeroExtraTags(sym);
+  document.getElementById('tradeTable').innerHTML =
+    '<div class="loading" style="height:80px"><div class="spinner"></div></div>';
+  resetStats();
+  document.querySelectorAll('.stock-row').forEach(el =>
+    el.classList.toggle('active', el.dataset.sym === sym));
+
+  // histories аль хэдийн байвал дахин татахгүй
+  if (cache[sym] && !cache[sym].summaryOnly && cache[sym].histories) { render(sym); return; }
+  try {
+    const [rawRes, adjRes, weekRes, monthRes] = await Promise.all([
+    fetch(`data/${sym}.json`),
+    fetch(`data/${sym}_adj.json`),
+    fetch(`data/${sym}_weekly_adj.json`),
+    fetch(`data/${sym}_monthly_adj.json`)
+    ]);
+    if (!rawRes.ok) throw new Error('Өгөгдөл олдсонгүй — python fetch_data.py ажиллуулна уу');
+    const histories = await rawRes.json();
+    const adjHistories = adjRes.ok ? await adjRes.json() : histories;
+    const weeklyAdj = weekRes.ok ? await weekRes.json() : [];
+    const monthlyAdj = monthRes.ok ? await monthRes.json() : [];
+    const last = histories[histories.length - 1] || {};
+    const prev = histories[histories.length - 2] || {};
+    const lastPrice = last.ClosingPrice || 0;
+    const prevClose = last.PreviousClose || prev.ClosingPrice || 0;
+    const chgVal = lastPrice - prevClose;
+    const chgPct = prevClose ? (chgVal / prevClose * 100) : 0;
+
+    cache[sym] = { histories, adjHistories, weeklyAdj, monthlyAdj, lastPrice, prevClose, chgVal, chgPct, last, summaryOnly: false };
+    render(sym);
+    updateSidebarRow(sym, lastPrice, chgPct);
+
+  } catch(e) {
+    document.getElementById('chartWrap').innerHTML =
+      `<div class="empty">⚠️ ${e.message}</div>`;
+    document.getElementById('tradeTable').innerHTML =
+      `<div class="empty">Өгөгдөл байхгүй байна</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════
+// RENDER
+// ═══════════════════════════════════════════
+function render(sym) {
+  const d = cache[sym];
+  if (!d) return;
+
+  document.getElementById('heroPrice').textContent = fmt(d.lastPrice) + '₮';
+  const isUp = d.chgVal >= 0;
+  const chgEl = document.getElementById('heroChg');
+  chgEl.textContent = `${isUp?'+':''}${d.chgVal.toFixed(2)} (${isUp?'+':''}${d.chgPct.toFixed(2)}%)`;
+  chgEl.className = 'hero-chg ' + (isUp ? 'up' : 'dn');
+  chgEl.style.display = 'inline-flex';
+
+  const last = d.last || {};
+  document.getElementById('stPrev').textContent = fmt(d.prevClose) + '₮';
+  document.getElementById('stOC').textContent = fmt(last.OpeningPrice) + '₮';
+  document.getElementById('stOCSub').textContent = '→ ' + fmt(last.ClosingPrice) + '₮';
+  document.getElementById('stHL').textContent = fmt(last.HighPrice) + '₮';
+  document.getElementById('stHLSub').textContent = '↓ ' + fmt(last.LowPrice) + '₮';
+  document.getElementById('stVol').textContent = fmtNum(last.Volume);
+  document.getElementById('stVolSub').textContent = (last.Trades || 0) + ' хэлцэл';
+
+  showKLineChart(sym);
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR & TICKER
+// ═══════════════════════════════════════════
+function renderList() {
+  const q = (document.getElementById('searchInput')?.value || '').toLowerCase();
+
+  if (secCategory !== 'STOCK') {
+    renderOtherSecuritiesList(q);
+    return;
+  }
+
+  let list = catFilter === 'all' ? COMPANIES : COMPANIES.filter(c => c.cat === catFilter);
+  if (q) list = list.filter(c => c.sym.toLowerCase().includes(q) || c.name.toLowerCase().includes(q));
+  const grouped = {};
+  list.forEach(c => { if (!grouped[c.cat]) grouped[c.cat]=[]; grouped[c.cat].push(c); });
+  let html = '';
+  ['I','II','III'].forEach(cat => {
+    if (!grouped[cat]?.length) return;
+    if (catFilter === 'all') html += `<div class="cat-divider">${cat} ангилал</div>`;
+    grouped[cat].forEach(c => {
+      const cd = cache[c.sym];
+      const price = cd ? fmt(cd.lastPrice)+'₮' : '—';
+      const isUp = cd ? cd.chgVal >= 0 : true;
+      const chg = cd ? `<span class="${isUp?'up':'dn'}">${isUp?'+':''}${cd.chgPct.toFixed(2)}%</span>` : '';
+      html += `<div class="stock-row${currentSym===c.sym?' active':''}" data-sym="${c.sym}" onclick="loadStock('${c.sym}')">
+        <div><div class="sr-sym">${c.sym}</div><div class="sr-name">${c.name}</div></div>
+        <div><div class="sr-price" id="lp_${c.sym}">${price}</div><div class="sr-chg" id="lc_${c.sym}">${chg}</div></div>
+      </div>`;
+    });
+  });
+  document.getElementById('stockList').innerHTML = html || '<div class="empty">Олдсонгүй</div>';
+  document.getElementById('sbCount').textContent = list.length;
+}
+
+let otherStatusCache = {}; // { [id]: {active,label} | null }
+
+async function fetchOtherStatus(id) {
+  if (otherStatusCache[id] !== undefined) return otherStatusCache[id];
+  if (otherCache[id]) {
+    const st = computeSecurityStatus(otherCache[id].general_info);
+    otherStatusCache[id] = st;
+    return st;
+  }
+  try {
+    const res = await fetch(`data/other_securities/${id}.json`);
+    if (!res.ok) throw new Error('not found');
+    const data = await res.json();
+    otherCache[id] = data; // дараа дарахад дахин татахгүйн тулд бас энд хадгална
+    const st = computeSecurityStatus(data.general_info);
+    otherStatusCache[id] = st;
+    return st;
+  } catch (e) {
+    otherStatusCache[id] = null;
+    return null;
+  }
+}
+
+function renderOtherSecuritiesList(q) {
+  const listEl = document.getElementById('stockList');
+  const countEl = document.getElementById('sbCount');
+
+  if (!otherSecuritiesIndex || !otherSecuritiesIndex[secCategory] || !otherSecuritiesIndex[secCategory].length) {
+    listEl.innerHTML = '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+    countEl.textContent = '0';
+    return;
+  }
+
+  let list = otherSecuritiesIndex[secCategory];
+  if (q) list = list.filter(c =>
+    (c.symbol || '').toLowerCase().includes(q) || (c.name || '').toLowerCase().includes(q));
+
+  if (!list.length) {
+    listEl.innerHTML = '<div class="empty">Олдсонгүй</div>';
+    countEl.textContent = '0';
+    return;
+  }
+
+  const showsStatus = (secCategory === 'BOND' || secCategory === 'ZGDUTS');
+
+  let html = '';
+  list.forEach(c => {
+    let rightHtml = '';
+    if (showsStatus) {
+      const cached = otherStatusCache[c.id];
+      if (cached !== undefined) {
+        if (cached) rightHtml = `<div class="sr-status ${cached.active ? 'active' : 'inactive'}">${cached.label}</div>`;
+      } else {
+        rightHtml = `<div class="sr-status" id="sr-status-${c.id}"></div>`;
+      }
+    }
+    html += `<div class="stock-row${currentOtherId===c.id?' active':''}" data-id="${c.id}" onclick="loadOtherSecurity(${c.id})">
+      <div><div class="sr-sym">${c.symbol}</div><div class="sr-name">${c.name}</div></div>
+      <div>${rightHtml}</div>
+    </div>`;
+  });
+  listEl.innerHTML = html;
+  countEl.textContent = list.length;
+
+  if (showsStatus) {
+    list.forEach(c => {
+      if (otherStatusCache[c.id] === undefined) {
+        fetchOtherStatus(c.id).then(status => {
+          const el = document.getElementById('sr-status-' + c.id);
+          if (el && status) {
+            el.textContent = status.label;
+            el.classList.add(status.active ? 'active' : 'inactive');
+          }
+        });
+      }
+    });
+  }
+}
+
+function setViewTabsMode(isOther) {
+  document.querySelectorAll('.view-tab.stock-only').forEach(b => {
+    b.classList.toggle('stock-only-hidden', isOther);
+  });
+}
+
+function showOtherView(view) {
+  document.querySelectorAll('.view-tab:not(.stock-only)').forEach(b =>
+    b.classList.toggle('active', b.dataset.view === view));
+  document.getElementById('tabTojim').style.display = 'none';
+  document.getElementById('tabGeneral').style.display = (view === 'general') ? '' : 'none';
+  document.getElementById('tabTradeHist').style.display = (view === 'tradehist') ? '' : 'none';
+  document.getElementById('tabOwnership').style.display = 'none';
+  currentView = view;
+}
+
+async function loadOtherSecurity(id) {
+  currentOtherId = id;
+  currentSym = null; // хувьцааны горимоос гарна
+  document.getElementById('viewTabRow').style.display = 'flex';
+  setViewTabsMode(true);
+  showOtherView('general');
+  document.getElementById('thFilterRow').style.display = 'none';
+  document.querySelectorAll('.stock-row').forEach(el =>
+    el.classList.toggle('active', el.dataset.id === String(id)));
+
+  const rec = (otherSecuritiesIndex[secCategory] || []).find(x => x.id === id);
+  document.getElementById('heroSym').textContent = rec ? rec.symbol : '—';
+  document.getElementById('heroName').textContent = rec ? rec.name : 'Ачаалж байна...';
+  document.getElementById('heroPrice').textContent = '—';
+  document.getElementById('heroChg').style.display = 'none';
+  document.getElementById('heroTags').innerHTML = `<span class="hero-tag">Ачаалж байна...</span>`;
+  document.getElementById('heroLogo').innerHTML = ICON_DOC;
+  document.getElementById('genInfoBody').innerHTML =
+    '<div class="loading" style="height:80px"><div class="spinner"></div></div>';
+  document.getElementById('tradeTable').innerHTML =
+    '<div class="loading" style="height:80px"><div class="spinner"></div></div>';
+
+  // кэшлэгдсэн бол дахин татахгүй
+  if (otherCache[id]) { renderOtherSecurity(id); return; }
+
+  try {
+    const res = await fetch(`data/other_securities/${id}.json`);
+    if (!res.ok) throw new Error('Өгөгдөл олдсонгүй');
+    const data = await res.json();
+    otherCache[id] = data;
+    renderOtherSecurity(id);
+  } catch (e) {
+    document.getElementById('genInfoBody').innerHTML =
+      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+    document.getElementById('tradeTable').innerHTML =
+      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+  }
+}
+
+function renderOtherSecurity(id) {
+  const data = otherCache[id];
+  if (!data) return;
+
+  document.getElementById('heroSym').textContent = data.symbol || '—';
+  document.getElementById('heroName').textContent = data.name || '—';
+  document.getElementById('heroLogo').innerHTML = ICON_DOC;
+
+  const status = computeSecurityStatus(data.general_info);
+  document.getElementById('heroTags').innerHTML = status
+    ? `<span class="hero-tag ${status.active ? 'status-active' : 'status-inactive'}">${status.label}</span>`
+    : `<span class="hero-tag">${data.category || secCategory}</span>`;
+
+  document.getElementById('heroPrice').textContent = '—';
+  document.getElementById('heroChg').style.display = 'none';
+
+  document.getElementById('genInfoBody').innerHTML =
+    renderGeneralInfo(data.category, data.general_info);
+
+  renderOtherTradeTable(id, data);
+}
+
+function renderOtherTradeTable(id, data) {
+  const ohlcv = data.ohlcv || [];
+  if (!ohlcv.length) {
+    document.getElementById('tradeTable').innerHTML =
+      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+    return;
+  }
+  const rows = [...ohlcv].reverse().slice(0, 100);
+  let html = `<table class="hist-tbl"><thead><tr>
+    <th>№</th><th>Огноо</th><th>Нээлт</th><th>Хаалт</th>
+    <th>Дээд / Доод</th><th>Эзлэхүүн</th><th>Үнийн дүн</th><th>Хэлцэл</th>
+  </tr></thead><tbody>`;
+  rows.forEach((r, i) => {
+    const isUp = r.ClosingPrice >= r.OpeningPrice;
+    html += `<tr>
+      <td>${i+1}</td><td>${r.dates}</td>
+      <td>${fmt(r.OpeningPrice)}</td>
+      <td style="color:var(${isUp?'--green':'--red'})">${fmt(r.ClosingPrice)}</td>
+      <td>${fmt(r.HighPrice)} / ${fmt(r.LowPrice)}</td>
+      <td>${fmtNum(r.Volume)}</td>
+      <td>${fmtNum(Math.round(r.Turnover || 0))}</td>
+      <td>${r.Trades || 0}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('tradeTable').innerHTML = html;
+  document.getElementById('tradeInfo2').textContent = ohlcv.length + ' арилжааны өдөр';
+}
+
+function updateSidebarRow(sym, price, chgPct) {
+  const lp = document.getElementById('lp_'+sym);
+  const lc = document.getElementById('lc_'+sym);
+  if (lp) lp.textContent = fmt(price)+'₮';
+  if (lc) {
+    const isUp = chgPct >= 0;
+    lc.innerHTML = `<span class="${isUp?'up':'dn'}">${isUp?'+':''}${chgPct.toFixed(2)}%</span>`;
+  }
+}
+
+function buildTickerFromSummary(stocks) {
+  const items = stocks.map(st => {
+    const isUp = st.chgVal >= 0;
+    return `<span class="ti"><span class="ti-sym">${st.sym}</span><span class="ti-price">${fmt(st.lastPrice)}₮</span><span class="ti-chg ${isUp?'up':'dn'}">${isUp?'+':''}${st.chgPct.toFixed(2)}%</span></span>`;
+  });
+  const doubled = [...items, ...items].join('');
+  document.getElementById('tickerTrack').innerHTML = doubled;
+}
+function renderTable(sym) {
+  const d = cache[sym];
+  if (!d?.histories?.length) {
+    document.getElementById('tradeTable').innerHTML = '<div class="empty">Өгөгдөл байхгүй</div>';
+    return;
+  }
+  const rows = [...d.histories].reverse();
+  renderTradeTableRows(rows, d.histories.length);
+}
+
+function renderTradeTableRows(rows, totalCount) {
+  if (!rows.length) {
+    document.getElementById('tradeTable').innerHTML = '<div class="empty">Сонгосон хугацаанд өгөгдөл алга</div>';
+    document.getElementById('tradeInfo2').textContent = '0 арилжааны өдөр';
+    return;
+  }
+  let html = `<table class="hist-tbl"><thead><tr>
+    <th>№</th><th>Огноо</th><th>Нээлт</th><th>Хаалт</th>
+    <th>Дээд / Доод</th><th>Эзлэхүүн</th><th>Үнийн дүн</th><th>Хэлцэл</th>
+  </tr></thead><tbody>`;
+  rows.forEach((r, i) => {
+    const isUp = r.ClosingPrice >= r.OpeningPrice;
+    html += `<tr>
+      <td>${i+1}</td><td>${r.dates}</td>
+      <td>${fmt(r.OpeningPrice)}</td>
+      <td style="color:var(${isUp?'--green':'--red'})">${fmt(r.ClosingPrice)}</td>
+      <td>${fmt(r.HighPrice)} / ${fmt(r.LowPrice)}</td>
+      <td>${fmtNum(r.Volume)}</td>
+      <td>${fmtNum(Math.round(r.Turnover))}</td>
+      <td>${r.Trades}</td>
+    </tr>`;
+  });
+  html += '</tbody></table>';
+  document.getElementById('tradeTable').innerHTML = html;
+  document.getElementById('tradeInfo2').textContent = rows.length + ' / ' + totalCount + ' арилжааны өдөр';
+}
+
+const DEFAULT_TRADE_HIST_LIMIT = 50;
+
+function loadTradeHistTab(sym) {
+  const d = cache[sym];
+  if (!d || !d.histories || !d.histories.length) {
+    document.getElementById('tradeTable').innerHTML = '<div class="empty">Өгөгдөл байхгүй</div>';
+    return;
+  }
+  const dates = d.histories.map(r => r.dates).filter(Boolean).sort();
+  const minD = dates[0], maxD = dates[dates.length - 1];
+  const startInput = document.getElementById('thStartDate');
+  const endInput = document.getElementById('thEndDate');
+  startInput.min = minD; startInput.max = maxD;
+  endInput.min = minD; endInput.max = maxD;
+
+  // Анхны ачаалалтаар зөвхөн сүүлийн N (default 50) арилжааны өдрийг харуулна
+  const total = d.histories.length;
+  const defaultStartIdx = Math.max(0, total - DEFAULT_TRADE_HIST_LIMIT);
+  const defaultStart = d.histories[defaultStartIdx].dates;
+  startInput.value = defaultStart;
+  endInput.value = maxD;
+
+  const defaultRows = d.histories.slice(defaultStartIdx);
+  renderTradeTableRows([...defaultRows].reverse(), total);
+}
+
+function applyTradeHistFilter() {
+  const sym = currentSym;
+  const d = cache[sym];
+  if (!d || !d.histories) return;
+  const start = document.getElementById('thStartDate').value;
+  const end = document.getElementById('thEndDate').value;
+  const filtered = d.histories.filter(r => r.dates && r.dates >= start && r.dates <= end);
+  renderTradeTableRows([...filtered].reverse(), d.histories.length);
+}
+
+function clearTradeHistFilter() {
+  if (!currentSym) return;
+  const d = cache[currentSym];
+  if (!d || !d.histories || !d.histories.length) return;
+  const dates = d.histories.map(r => r.dates).filter(Boolean).sort();
+  const minD = dates[0], maxD = dates[dates.length - 1];
+  document.getElementById('thStartDate').value = minD;
+  document.getElementById('thEndDate').value = maxD;
+  renderTable(currentSym);
+}
+
+// ═══════════════════════════════════════════
+// CONTROLS
+// ═══════════════════════════════════════════
+function setCat(cat, btn) {
+  catFilter = cat;
+  document.querySelectorAll('#catRow .cat-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderList();
+}
+
+async function setSecCategory(cat, btn) {
+  secCategory = cat;
+  currentOtherId = null;
+  document.querySelectorAll('.sec-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('catRow').style.display = (cat === 'STOCK') ? 'flex' : 'none';
+
+  if (cat !== 'STOCK' && !otherSecuritiesIndex) {
+    await loadOtherSecuritiesIndex();
+  }
+  renderList();
+}
+
+async function loadOtherSecuritiesIndex() {
+  document.getElementById('stockList').innerHTML =
+    '<div class="loading" style="height:120px"><div class="spinner"></div></div>';
+  try {
+    const res = await fetch('data/other_securities/index.json');
+    if (!res.ok) throw new Error('index olodsonguii');
+    otherSecuritiesIndex = await res.json();
+  } catch (e) {
+    otherSecuritiesIndex = {};
+  }
+}
+
+// ═══ VIEW TABS (Тойм / Ерөнхий мэдээлэл / Санхүүгийн мэдээлэл) ═══
+function resetToTojimView() {
+  currentView = 'tojim';
+  document.querySelectorAll('.view-tab').forEach(b => b.classList.remove('active'));
+  const tojimBtn = document.querySelector('.view-tab[data-view="tojim"]');
+  if (tojimBtn) tojimBtn.classList.add('active');
+  document.getElementById('tabTojim').style.display = '';
+  document.getElementById('tabGeneral').style.display = 'none';
+  document.getElementById('tabTradeHist').style.display = 'none';
+  document.getElementById('tabOwnership').style.display = 'none';
+}
+
+function setView(view, btn) {
+  if (btn.classList.contains('disabled')) return;
+  currentView = view;
+  document.querySelectorAll('.view-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('tabTojim').style.display = (view === 'tojim') ? '' : 'none';
+  document.getElementById('tabGeneral').style.display = (view === 'general') ? '' : 'none';
+  document.getElementById('tabTradeHist').style.display = (view === 'tradehist') ? '' : 'none';
+  document.getElementById('tabOwnership').style.display = (view === 'ownership') ? '' : 'none';
+  if (view === 'general' && currentSym) {
+    loadProfile(currentSym);
+  }
+  if (view === 'general' && currentOtherId && otherCache[currentOtherId]) {
+    const d = otherCache[currentOtherId];
+    document.getElementById('genInfoBody').innerHTML =
+      renderGeneralInfo(d.category, d.general_info);
+  }
+  if (view === 'tradehist' && currentSym) {
+    loadTradeHistTab(currentSym);
+  }
+  if (view === 'ownership' && currentSym) {
+    loadOwnership(currentSym);
+  }
+}
+
+async function loadProfile(sym) {
+  if (profileCache[sym]) { renderProfileGeneral(sym); return; }
+  document.getElementById('genInfoBody').innerHTML =
+    '<div class="loading" style="height:120px"><div class="spinner"></div></div>';
+  document.getElementById('genSubBody').innerHTML = '<div class="empty">Ачаалж байна...</div>';
+  try {
+    const res = await fetch(`data/profiles/${sym}.json`);
+    if (!res.ok) throw new Error('Профайл олдсонгүй');
+    const data = await res.json();
+    profileCache[sym] = data;
+    renderProfileGeneral(sym);
+  } catch (e) {
+    document.getElementById('genInfoBody').innerHTML =
+      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+    document.getElementById('genSubBody').innerHTML =
+      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+  }
+}
+
+const GENERAL_FIELD_LABELS = [
+  'Байршил хаяг','Утас, Факс','Гүйцэтгэх захирал','И-мэйл','Вэб сайт',
+  'Байгуулагдсан огноо','МХБ-д бүртгүүлсэн огноо','Нийт ажилчдын тоо',
+  'Улсын бүртгэлийн дугаар','Гэрчилгээний дугаар','Бизнесийн чиглэл',
+  'Үйл ажиллагааны чиглэл','Үйл ажиллагааны туслах чиглэл',
+  'Үйл ажиллагааны байдал','ISIN'
+];
+
+async function loadHeroExtraTags(sym) {
+  try {
+    if (!profileCache[sym]) {
+      const res = await fetch(`data/profiles/${sym}.json`);
+      if (!res.ok) return;
+      profileCache[sym] = await res.json();
+    }
+    if (currentSym !== sym) return;
+    const g = profileCache[sym].general || {};
+    const biz = g['Бизнесийн чиглэл'];
+    const isin = g['ISIN'];
+    let extra = '';
+    if (biz && biz !== 'N/A') extra += `<span class="hero-tag">${biz}</span>`;
+    if (isin && isin !== 'N/A') extra += `<span class="hero-tag">ISIN ${isin}</span>`;
+    if (extra) document.getElementById('heroTags').insertAdjacentHTML('beforeend', extra);
+  } catch (e) {}
+}
+
+function renderProfileGeneral(sym) {
+  const data = profileCache[sym];
+  if (!data) return;
+  const g = data.general || {};
+  const isValid = v => v !== undefined && v !== null && v !== '' && v !== 'N/A';
+
+  // Тагууд: бизнесийн чиглэл, үйл ажиллагааны чиглэл, төлөв
+  let tags = '';
+  if (isValid(g['Бизнесийн чиглэл'])) tags += `<span class="info-tag">${g['Бизнесийн чиглэл']}</span>`;
+  if (isValid(g['Үйл ажиллагааны чиглэл'])) tags += `<span class="info-tag">${g['Үйл ажиллагааны чиглэл']}</span>`;
+  if (isValid(g['Үйл ажиллагааны байдал'])) {
+    const okStatus = /хэвийн/i.test(g['Үйл ажиллагааны байдал']);
+    tags += `<span class="info-tag${okStatus ? ' status-ok' : ''}">${g['Үйл ажиллагааны байдал']}</span>`;
+  }
+
+  // Icon-той үндсэн мэдээллийн items
+  const items = [];
+  if (isValid(g['Байгуулагдсан огноо']))
+    items.push(['Үүсгэн байгуулсан', g['Байгуулагдсан огноо'], ICON_CALENDAR]);
+  if (isValid(g['МХБ-д бүртгүүлсэн огноо']))
+    items.push(['МХБ-д бүртгүүлсэн', g['МХБ-д бүртгүүлсэн огноо'], ICON_CALENDAR]);
+  if (isValid(g['Гүйцэтгэх захирал']))
+    items.push(['Гүйцэтгэх захирал', g['Гүйцэтгэх захирал'], ICON_PERSON]);
+  if (isValid(g['Нийт ажилчдын тоо']))
+    items.push(['Нийт ажилчдын тоо', g['Нийт ажилчдын тоо'], ICON_USERS]);
+  if (isValid(g['Утас, Факс']))
+    items.push(['Утас, Факс', g['Утас, Факс'], ICON_PHONE]);
+  if (isValid(g['И-мэйл']))
+    items.push(['И-мэйл', `<a href="mailto:${g['И-мэйл']}">${g['И-мэйл']}</a>`, ICON_MAIL]);
+  if (isValid(g['Вэб сайт'])) {
+    const url = g['Вэб сайт'].startsWith('http') ? g['Вэб сайт'] : `https://${g['Вэб сайт']}`;
+    items.push(['Веб сайт', `<a href="${url}" target="_blank" rel="noopener">${g['Вэб сайт']}</a>`, ICON_GLOBE]);
+  }
+
+  let itemsHtml = items.map(([label, val, icon]) => `
+    <div class="info-item">
+      <div class="info-icon">${icon}</div>
+      <div>
+        <div class="info-label">${label}</div>
+        <div class="info-value">${val}</div>
+      </div>
+    </div>`).join('');
+
+  // Байршил хаяг — бүтэн мөрөнд
+  let addressHtml = '';
+  if (isValid(g['Байршил хаяг'])) {
+    addressHtml = `
+    <div class="info-item full">
+      <div class="info-icon">${ICON_PIN}</div>
+      <div>
+        <div class="info-label">Байршил хаяг</div>
+        <div class="info-value">${g['Байршил хаяг']}</div>
+      </div>
+    </div>`;
+  }
+
+  // Бага ач холбогдолтой дугаарууд — доор жижиг chip болгож
+  let metaChips = '';
+  if (isValid(g['Улсын бүртгэлийн дугаар'])) metaChips += `<span class="info-meta-chip">Улсын бүртгэл: ${g['Улсын бүртгэлийн дугаар']}</span>`;
+  if (isValid(g['Гэрчилгээний дугаар'])) metaChips += `<span class="info-meta-chip">Гэрчилгээ: ${g['Гэрчилгээний дугаар']}</span>`;
+  if (isValid(g['ISIN'])) metaChips += `<span class="info-meta-chip">ISIN: ${g['ISIN']}</span>`;
+
+  if (!tags && !itemsHtml && !addressHtml && !metaChips) {
+    document.getElementById('genInfoBody').innerHTML = '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+    return;
+  }
+
+  document.getElementById('genInfoBody').innerHTML = `
+    <div class="info-card">
+      ${tags ? `<div class="info-tags">${tags}</div>` : ''}
+      <div class="info-grid">${itemsHtml}${addressHtml}</div>
+      ${metaChips ? `<div class="info-divider"></div><div class="info-meta-row">${metaChips}</div>` : ''}
+    </div>`;
+}
+
+// ═══════════════════════════════════════════
+// OWNERSHIP TAB — Хувьцаа эзэмшил
+// ═══════════════════════════════════════════
+function parsePct(str) {
+  if (!str) return 0;
+  const m = String(str).match(/([\d.]+)\s*%/);
+  return m ? parseFloat(m[1]) : 0;
+}
+function parseCount(str) {
+  if (!str) return 0;
+  const m = String(str).match(/^([\d,]+)/);
+  return m ? parseInt(m[1].replace(/,/g, '')) : 0;
+}
+function parseSharesField(str) {
+  if (!str) return 0;
+  const n = parseInt(String(str).replace(/,/g, ''));
+  return isNaN(n) ? 0 : n;
+}
+let tradeinfoCache = {};
+
+const DONUT_COLORS = ['#1552f0', '#059669', '#dc2626', '#8496b8', '#f59e0b', '#7c3aed'];
+const ICON_PIE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"/><path d="M22 12A10 10 0 0 0 12 2v10z"/></svg>';
+const ICON_CROWN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m2 4 3 12h14l3-12-6 7-4-7-4 7-6-7z"/></svg>';
+const ICON_USERS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>';
+const ICON_STAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+const ICON_BOARD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 10h18M9 4v14"/></svg>';
+const ICON_BRIEFCASE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>';
+
+const ICON_CALENDAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>';
+const ICON_MAIL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>';
+const ICON_GLOBE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></svg>';
+const ICON_PIN = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
+const ICON_PERSON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+const ICON_PERCENT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>';
+const ICON_HASH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"/><line x1="4" y1="15" x2="20" y2="15"/><line x1="10" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="14" y2="21"/></svg>';
+const ICON_DOC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+
+async function loadOwnership(sym) {
+  if (profileCache[sym] && tradeinfoCache[sym] !== undefined) { renderOwnership(sym); return; }
+  document.getElementById('ownershipBody').innerHTML =
+    '<div class="loading" style="height:160px"><div class="spinner"></div></div>';
+  try {
+    const [profRes, tiRes] = await Promise.all([
+      profileCache[sym] ? Promise.resolve(null) : fetch(`data/profiles/${sym}.json`),
+      fetch(`data/${sym}_tradeinfo.json`)
+    ]);
+    if (!profileCache[sym]) {
+      if (!profRes.ok) throw new Error('Профайл олдсонгүй');
+      profileCache[sym] = await profRes.json();
+    }
+    tradeinfoCache[sym] = tiRes.ok ? await tiRes.json() : null;
+    renderOwnership(sym);
+  } catch (e) {
+    document.getElementById('ownershipBody').innerHTML =
+      '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+  }
+}
+
+function renderOwnership(sym) {
+  const data = profileCache[sym];
+  const body = document.getElementById('ownershipBody');
+  if (!data) { body.innerHTML = '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>'; return; }
+
+  const history = (data.shareholders && data.shareholders.main) || [];
+  const list = history[0] || [];
+  const board = (data.boardmembers && data.boardmembers.main) || [];
+  const officials = (data.officials && data.officials.main) || [];
+
+  if (!list.length) {
+    body.innerHTML = '<div class="empty">Одоогоор мэдээлэл байхгүй байна</div>';
+    return;
+  }
+
+  const influentialShares = list.reduce((s, r) => s + parseCount(r['Хувьцааны тоо']), 0);
+  const totalPct = list.reduce((s, r) => s + parsePct(r['Хувьцааны тоо']), 0);
+  const ti = tradeinfoCache[sym];
+  const sharesOutstanding = ti ? parseSharesField(ti['Эргэлтэд гаргасан хувьцаа'] || ti['Нийт гаргасан хувьцаа']) : 0;
+  const totalShares = sharesOutstanding > influentialShares ? sharesOutstanding : influentialShares;
+  const freeFloatShares = Math.max(0, totalShares - influentialShares);
+  const freeFloat = totalShares > 0 ? (freeFloatShares / totalShares * 100) : Math.max(0, 100 - totalPct);
+
+  const circumference = 2 * Math.PI * 70;
+  let offset = 0, segments = '', legend = '';
+  list.slice(0, 5).forEach((r, i) => {
+    const pct = parsePct(r['Хувьцааны тоо']);
+    const len = circumference * pct / 100;
+    const color = DONUT_COLORS[i % DONUT_COLORS.length];
+    segments += `<circle cx="90" cy="90" r="70" fill="none" stroke="${color}" stroke-width="22" stroke-dasharray="${len} ${circumference}" stroke-dashoffset="${-offset}" transform="rotate(-90 90 90)"/>`;
+    legend += `<div style="display:flex;align-items:center;gap:6px;"><span class="dot" style="background:${color}"></span>${r['Нэр']}&nbsp;<b>${pct.toFixed(2)}%</b></div>`;
+    offset += len;
+  });
+  if (freeFloat > 0.05) {
+    const len = circumference * freeFloat / 100;
+    segments += `<circle cx="90" cy="90" r="70" fill="none" stroke="#8496b8" stroke-width="22" stroke-dasharray="${len} ${circumference}" stroke-dashoffset="${-offset}" transform="rotate(-90 90 90)"/>`;
+    legend += `<div style="display:flex;align-items:center;gap:6px;"><span class="dot" style="background:#8496b8"></span>Жижиг хувьцаа эзэмшигчид&nbsp;<b>${freeFloat.toFixed(2)}%</b></div>`;
+  }
+
+  const topHolder = list[0] || {};
+
+  let tableRows = '';
+  list.forEach((r, i) => {
+    const nm = r['Нэр'] || '';
+    const initials = nm.split(/\s+/).map(w => w[0]).slice(0, 2).join('').toUpperCase();
+    const avColor = DONUT_COLORS[i % DONUT_COLORS.length];
+    tableRows += `<tr><td>${i + 1}</td><td><div style="display:flex;align-items:center"><span class="own-avatar" style="background:${avColor}">${initials}</span>${nm}</div></td><td style="color:var(--blue);font-weight:700">${parsePct(r['Хувьцааны тоо']).toFixed(2)}%</td><td>${fmtNum(parseCount(r['Хувьцааны тоо']))}</td></tr>`;
+  });
+
+  let historyToggle = '';
+  if (history.length > 1) {
+    let histHtml = '';
+    for (let h = 1; h < history.length; h++) {
+      const snap = history[h];
+      histHtml += `<div style="padding:8px 14px;border-top:1px solid var(--border-lt);font-size:11px;color:var(--text3);">${(snap[0] && snap[0]['Огноо']) || ''}</div>`;
+      snap.forEach(r => {
+        histHtml += `<div style="padding:6px 14px;font-size:12px;display:flex;justify-content:space-between;"><span>${r['Нэр']}</span><span>${parsePct(r['Хувьцааны тоо']).toFixed(2)}%</span></div>`;
+      });
+    }
+    historyToggle = `
+      <div class="own-hist-toggle" onclick="const el=document.getElementById('ownHistBody_${sym}');el.style.display=el.style.display==='none'?'block':'none';">▾ Түүхэн өөрчлөлт харах (${history.length - 1} бичлэг)</div>
+      <div id="ownHistBody_${sym}" style="display:none;border-top:1px solid var(--border-lt)">${histHtml}</div>`;
+  }
+
+  let boardRows = board.slice(0, 6).map(r =>
+    `<div class="own-mini-row"><span>${r['Нэр'] || ''}</span><span style="color:var(--text3)">${r['Албан тушаал'] || r['Гишүүнчлэл'] || ''}</span></div>`).join('');
+  if (!boardRows) boardRows = '<div class="empty">Мэдээлэл байхгүй</div>';
+
+  let officialRows = officials.slice(0, 6).map(r =>
+    `<div class="own-mini-row"><span>${r['Нэр'] || ''}</span><span style="color:var(--text3)">${r['Албан тушаал'] || ''}</span></div>`).join('');
+  if (!officialRows) officialRows = '<div class="empty">Мэдээлэл байхгүй</div>';
+
+  body.innerHTML = `
+    <div class="own-grid">
+      <div class="own-card">
+        <div class="own-title"><span class="own-icon">${ICON_PIE}</span>Эзэмшлийн бүтэц</div>
+        <div style="display:flex;align-items:center;gap:18px;">
+          <svg width="180" height="180" viewBox="0 0 180 180">
+            <circle cx="90" cy="90" r="70" fill="none" stroke="var(--border-lt)" stroke-width="22"/>
+            ${segments}
+            <text x="90" y="84" text-anchor="middle" font-size="12" font-weight="700" fill="var(--text)">${fmtNum(totalShares)}</text>
+            <text x="90" y="101" text-anchor="middle" font-size="10" fill="var(--text3)">ширхэг</text>
+          </svg>
+          <div class="own-legend">${legend}</div>
+        </div>
+      </div>
+      <div class="own-stats">
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_USERS}</span>Нөлөө бүхий эзэмшигчид</div><div class="stat-val">${list.length}</div><div class="stat-sub">${totalPct.toFixed(1)}%</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_STAR}</span>Хамгийн том эзэмшигч</div><div class="stat-val">${parsePct(topHolder['Хувьцааны тоо']).toFixed(1)}%</div><div class="stat-sub">${topHolder['Нэр'] || ''}</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_BOARD}</span>ТУЗ-ийн гишүүд</div><div class="stat-val">${board.length}</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_BRIEFCASE}</span>Гүйцэтгэх удирдлага</div><div class="stat-val">${officials.length}</div></div>
+      </div>
+    </div>
+
+    <div class="trade-card" style="margin-top:12px">
+      <div class="card-head"><span class="card-title" style="display:flex;align-items:center;font-size:12px"><span class="own-icon" style="width:22px;height:22px;margin-right:6px">${ICON_CROWN}</span>Нөлөө бүхий хувьцаа эзэмшигчид</span></div>
+      <table class="hist-tbl"><thead><tr><th>№</th><th>Нэр</th><th>Хувь</th><th>Ширхэг</th></tr></thead><tbody>${tableRows}</tbody></table>
+      ${historyToggle}
+    </div>
+
+    <div class="own-two-col">
+      <div class="own-mini-card">
+        <div class="card-head"><span class="card-title">ТУЗ-ийн гишүүд</span></div>
+        ${boardRows}
+      </div>
+      <div class="own-mini-card">
+        <div class="card-head"><span class="card-title">Гүйцэтгэх удирдлага</span></div>
+        ${officialRows}
+      </div>
+    </div>
+  `;
+}
+
+function resetStats() {
+  ['stPrev','stOC','stHL','stVol'].forEach(id => document.getElementById(id).textContent = '—');
+  ['stOCSub','stHLSub','stVolSub'].forEach(id => document.getElementById(id).textContent = '');
+}
+function fmt(n) { return n != null ? Number(n).toLocaleString('mn-MN') : '—'; }
+function fmtNum(n) { return n != null ? Number(n).toLocaleString('mn-MN') : '—'; }
+// ═══════════════════════════════════════════
+// KLINECHART PRO — БҮХ КОМПАНИЙН ДИНАМИК ЧАРТ
+// ═══════════════════════════════════════════
+class KLineDatafeed {
+  async searchSymbols() { return []; }
+
+  async getHistoryKLineData(symbol, period, from, to) {
+    // ═══ Бонд/ХБҮЦ/Сан/ЗГДҮЦ (raw ohlcv, week/month тусдаа байхгүй) ═══
+    if (symbol.ticker.startsWith('OTH_')) {
+      const id = symbol.ticker.slice(4);
+      const d = otherCache[id];
+      if (!d || !d.ohlcv) return [];
+      return d.ohlcv
+        .filter(r => r.ClosingPrice > 0)
+        .map(r => {
+          const close = r.ClosingPrice;
+          const open  = r.OpeningPrice > 0 ? r.OpeningPrice : close;
+          const high  = r.HighPrice    > 0 ? r.HighPrice    : close;
+          const low   = r.LowPrice     > 0 ? r.LowPrice     : close;
+          return {
+            timestamp: new Date(r.dates).getTime(),
+            open, high: Math.max(open, high, close),
+            low: Math.min(open, low, close),
+            close, volume: r.Volume || 0,
+          };
+        })
+        .sort((a, b) => a.timestamp - b.timestamp);
+    }
+
+    const d = cache[symbol.ticker];
+    if (!d) return [];
+
+    let raw;
+    if (period.timespan === 'week') {
+      raw = (d.weeklyAdj && d.weeklyAdj.length) ? d.weeklyAdj : (d.adjHistories || d.histories);
+    } else if (period.timespan === 'month') {
+      raw = (d.monthlyAdj && d.monthlyAdj.length) ? d.monthlyAdj : (d.adjHistories || d.histories);
+    } else {
+      raw = d.adjHistories || d.histories;
+    }
+    if (!raw || !raw.length) return [];
+
+    return raw
+      .filter(r => r.ClosingPrice > 0)
+      .map(r => {
+        const close = r.ClosingPrice;
+        const open  = r.OpeningPrice > 0 ? r.OpeningPrice : close;
+        const high  = r.HighPrice    > 0 ? r.HighPrice    : close;
+        const low   = r.LowPrice     > 0 ? r.LowPrice     : close;
+        return {
+          timestamp: new Date(r.dates).getTime(),
+          open, high: Math.max(open, high, close),
+          low: Math.min(open, low, close),
+          close, volume: r.Volume || 0,
+        };
+      })
+      .sort((a, b) => a.timestamp - b.timestamp);
+  }
+
+  subscribe() {}
+  unsubscribe() {}
+}
+
+function symbolInfoFor(sym, co) {
+  return {
+    exchange: 'MSE', market: 'stocks',
+    name: co.name, shortName: sym, ticker: sym,
+    priceCurrency: 'mnt', type: 'stock',
+  };
+}
+
+function symbolInfoForOther(id, data) {
+  return {
+    exchange: 'MSE', market: 'stocks',
+    name: data.name, shortName: data.symbol, ticker: 'OTH_' + id,
+    priceCurrency: 'mnt', type: 'stock',
+  };
+}
+
+function showKLineChartOther(id, data) {
+  const sInfo = symbolInfoForOther(id, data);
+  if (!klineChart) {
+    klineChart = new klinechartspro.KLineChartPro({
+      container: document.getElementById('chartWrap'),
+      locale: 'en-US',
+      watermark: '',
+      theme: currentTheme,
+      symbol: sInfo,
+      period: { multiplier: 1, timespan: 'day', text: '1D' },
+      periods: [
+        { multiplier: 1, timespan: 'day', text: '1D' },
+      ],
+      datafeed: new KLineDatafeed(),
+      mainIndicators: [],
+      subIndicators: [],
+      styles: CHART_STYLES[currentTheme],
+    });
+  } else {
+    klineChart.setSymbol(sInfo);
+  }
+}
+
+const CHART_STYLES = {
+  light: {
+    grid: {
+  show: true,
+  horizontal: { show: true, color: '#edf0f9', style: 'solid', size: 0.5 },
+  vertical:   { show: true, color: '#edf0f9', style: 'solid', size: 0.5 },
+},
+    candle: {
+      type: 'candle_solid',
+      bar: {
+        upColor: '#059669', downColor: '#dc2626', noChangeColor: '#8496b8',
+        upBorderColor: '#059669', downBorderColor: '#dc2626',
+        upWickColor: '#059669', downWickColor: '#dc2626',
+      },
+      priceMark: { last: { upColor: '#059669', downColor: '#dc2626' } },
+      tooltip: { text: { color: '#0b1d3a' } },
+    },
+    indicator: { bars: [{ upColor: 'rgba(5,150,105,0.45)', downColor: 'rgba(220,38,38,0.45)' }] },
+    xAxis: { axisLine: { color: '#d6dff2' }, tickText: { color: '#8496b8' } },
+    yAxis: { axisLine: { color: '#d6dff2' }, tickText: { color: '#8496b8' } },
+    crosshair: { horizontal: { line: { color: '#8496b8' } }, vertical: { line: { color: '#8496b8' } } },
+  },
+  dark: {
+    grid: {
+  show: true,
+  horizontal: { show: true, color: '#33456e', style: 'solid', size: 0.5 },
+  vertical:   { show: true, color: '#33456e', style: 'solid', size: 0.5 },
+},
+    candle: {
+      type: 'candle_solid',
+      bar: {
+        upColor: '#22c55e', downColor: '#f87171', noChangeColor: '#5d6c8f',
+        upBorderColor: '#22c55e', downBorderColor: '#f87171',
+        upWickColor: '#22c55e', downWickColor: '#f87171',
+      },
+      priceMark: { last: { upColor: '#22c55e', downColor: '#f87171' } },
+      tooltip: { text: { color: '#dde4f5' } },
+    },
+    indicator: { bars: [{ upColor: 'rgba(34,197,94,0.45)', downColor: 'rgba(248,113,113,0.45)' }] },
+    xAxis: { axisLine: { color: '#242f4a' }, tickText: { color: '#5d6c8f' } },
+    yAxis: { axisLine: { color: '#242f4a' }, tickText: { color: '#5d6c8f' } },
+    crosshair: { horizontal: { line: { color: '#5d6c8f' } }, vertical: { line: { color: '#5d6c8f' } } },
+  },
+};
+
+function showKLineChart(sym) {
+  const co = COMPANIES.find(c => c.sym === sym);
+  if (!co) return;
+
+  if (!klineChart) {
+    klineChart = new klinechartspro.KLineChartPro({
+      container: document.getElementById('chartWrap'),
+      locale: 'en-US',
+      watermark: '',
+      theme: currentTheme,
+      symbol: symbolInfoFor(sym, co),
+      period: { multiplier: 1, timespan: 'day', text: '1D' },
+      periods: [
+        { multiplier: 1, timespan: 'day', text: '1D' },
+        { multiplier: 1, timespan: 'week', text: '1W' },
+        { multiplier: 1, timespan: 'month', text: '1M' },
+      ],
+      datafeed: new KLineDatafeed(),
+      mainIndicators: [],
+      subIndicators: [],
+      styles: CHART_STYLES[currentTheme],
+    });
+  } else {
+    klineChart.setSymbol(symbolInfoFor(sym, co));
+  }
+}
+
+// ═══ THEME TOGGLE ═══
+function applyTheme(theme) {
+  currentTheme = theme;
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('mp_theme', theme);
+  const iconPaths = {
+    dark: '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>',
+    light: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+  };
+  document.getElementById('themeIcon').innerHTML = iconPaths[theme];
+  if (klineChart) {
+    klineChart.setTheme(theme);
+    klineChart.setStyles(CHART_STYLES[theme]);
+  }
+}
+
+function toggleTheme() {
+  applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+}
+
+applyTheme(currentTheme);
+init();
+</script>
+</body>
+</html>
