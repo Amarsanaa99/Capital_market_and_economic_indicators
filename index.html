@@ -222,6 +222,12 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
 [data-theme="dark"] .klinecharts-pro-toolbar{
   background-color: #0f0f0f !important;
 }
+.fin-chart-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:18px 20px;box-shadow:var(--shadow);}
+.fin-bar-wrap{display:flex;align-items:flex-end;gap:14px;height:170px;padding-top:10px;overflow-x:auto;}
+.fin-bar-col{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;min-width:60px;}
+.fin-bar{width:100%;max-width:52px;border-radius:6px 6px 0 0;transition:height .3s;}
+.fin-bar-label{font-size:11px;color:var(--text3);font-family:var(--mono);}
+.fin-bar-val{font-size:11px;font-weight:700;color:var(--text);font-family:var(--mono);}
 </style>
 </head>
 <body>
@@ -284,7 +290,7 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
     <div class="view-tab-row" id="viewTabRow" style="display:none">
       <button class="view-tab active" data-view="tojim" onclick="setView('tojim',this)">Тойм</button>
       <button class="view-tab" data-view="general" onclick="setView('general',this)">Ерөнхий мэдээлэл</button>
-      <button class="view-tab disabled" data-view="financials" onclick="return false;" title="Тун удахгүй">Санхүүгийн мэдээлэл</button>
+      <button class="view-tab" data-view="financials" onclick="setView('financials',this)">Санхүүгийн мэдээлэл</button>
       <button class="view-tab" data-view="tradehist" onclick="setView('tradehist',this)">Арилжааны түүх</button>
       <button class="view-tab" data-view="ownership" onclick="setView('ownership',this)">Хувьцаа эзэмшил</button>
     </div>
@@ -327,6 +333,9 @@ header{background:var(--white);border-bottom:1px solid var(--border);padding:0 2
 
     <div id="tabOwnership" style="display:none">
       <div id="ownershipBody"><div class="empty">Компани сонгоно уу</div></div>
+    </div>
+    <div id="tabFinancials" style="display:none">
+      <div id="finBody"><div class="empty">Компани сонгоно уу</div></div>
     </div>
   </main>
 </div>
@@ -637,6 +646,7 @@ function resetToTojimView() {
   document.getElementById('tabGeneral').style.display = 'none';
   document.getElementById('tabTradeHist').style.display = 'none';
   document.getElementById('tabOwnership').style.display = 'none';
+  document.getElementById('tabFinancials').style.display = 'none';
 }
 
 function setView(view, btn) {
@@ -648,6 +658,7 @@ function setView(view, btn) {
   document.getElementById('tabGeneral').style.display = (view === 'general') ? '' : 'none';
   document.getElementById('tabTradeHist').style.display = (view === 'tradehist') ? '' : 'none';
   document.getElementById('tabOwnership').style.display = (view === 'ownership') ? '' : 'none';
+  document.getElementById('tabFinancials').style.display = (view === 'financials') ? '' : 'none';
   if (view === 'general' && currentSym) {
     loadProfile(currentSym);
   }
@@ -656,6 +667,9 @@ function setView(view, btn) {
   }
   if (view === 'ownership' && currentSym) {
     loadOwnership(currentSym);
+  }
+  if (view === 'financials' && currentSym) {
+    loadFinancialsTab(currentSym);
   }
 }
 
@@ -1086,7 +1100,233 @@ function applyTheme(theme) {
 function toggleTheme() {
   applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
 }
+// ═══════════════════════════════════════════
+// САНХҮҮГИЙН МЭДЭЭЛЭЛ (Financials)
+// ═══════════════════════════════════════════
+let financialsIndex = null;
+let financialsCache = {};   // sym -> { periods:[...], data:{period: rawJson} }
+let finState = {};          // sym -> { period, statement }
 
+const FIN_CODE_KEYS  = ['№', 'Мөрийн дугаар', 'No'];
+const FIN_LABEL_KEYS = ['Үзүүлэлт', 'Балансын зүйл', 'БАЛАНСЫН ЗҮЙЛ'];
+const FIN_STATEMENTS = [
+  { key: 'balance_sheet',    label: 'Балансын тайлан' },
+  { key: 'income_statement', label: 'Орлогын тайлан' },
+  { key: 'cash_flow',        label: 'Мөнгөн гүйлгээ' },
+  { key: 'equity_changes',   label: 'Өмчийн өөрчлөлт' },
+];
+
+async function loadFinancialsIndex() {
+  if (financialsIndex) return financialsIndex;
+  try {
+    const res = await fetch('data/financials/index.json');
+    financialsIndex = res.ok ? await res.json() : {};
+  } catch (e) { financialsIndex = {}; }
+  return financialsIndex;
+}
+
+function periodLabel(p) {
+  const m = p.match(/^(\d{4})_Q(\d)$/);
+  if (!m) return p;
+  const q = { '1':'I','2':'II','3':'III','4':'IV' }[m[2]] || m[2];
+  return `${m[1]} ${q} улирал`;
+}
+
+// Мөр бүрийг {code,label,v1,v2,k1,k2} болгож нэгтгэнэ — баганын нэр компаниас
+// хамаараад өөрчлөгддөг тул эхний 2 "утгын" баганыг эрэмбийн дагуу авна.
+function finNormalizeRows(rows) {
+  if (!Array.isArray(rows)) return [];
+  const out = [];
+  for (const row of rows) {
+    const keys = Object.keys(row);
+    const codeKey  = keys.find(k => FIN_CODE_KEYS.includes(k))  || keys[0];
+    const labelKey = keys.find(k => FIN_LABEL_KEYS.includes(k)) || keys[1];
+    const valueKeys = keys.filter(k => k !== codeKey && k !== labelKey);
+    const code = row[codeKey], label = row[labelKey];
+    const k1 = valueKeys[0], k2 = valueKeys[1];
+    const v1 = k1 != null ? row[k1] : null;
+    const v2 = k2 != null ? row[k2] : null;
+    const codeStr  = code  != null ? String(code).trim()  : '';
+    const labelStr = label != null ? String(label).trim() : '';
+    // гарын үсэг, header-placeholder мөрүүдийг шүүнэ
+    const isSignature = !labelStr && (typeof v1 === 'string' || typeof v2 === 'string' ||
+      /захирал|бодогч|нягтлан/i.test(codeStr));
+    const isHeaderMarker = /^[А-ЯЁ]$/i.test(codeStr);
+    if (isSignature || isHeaderMarker) continue;
+    if (!labelStr && v1 == null && v2 == null) continue;
+    if (labelStr === '...') continue;
+    out.push({ code: codeStr, label: labelStr, v1, v2, k1, k2 });
+  }
+  return out;
+}
+
+// equity_changes нь олон баганатай "waterfall" хүснэгт тул тусад нь боловсруулна
+function finNormalizeEquity(rows) {
+  if (!Array.isArray(rows) || !rows.length) return { cols: [], rows: [] };
+  const labelKey = Object.keys(rows[0]).find(k => /Үзүүлэлт/i.test(k)) || 'Үзүүлэлт';
+  const cols = Object.keys(rows[0]).filter(k => k !== labelKey && k !== 'No' && k !== '№');
+  const outRows = [];
+  for (const row of rows) {
+    const label = (row[labelKey] || '').toString().trim();
+    if (!label || /захирал|бодогч/i.test(label)) continue;
+    outRows.push({ label, values: cols.map(c => row[c]) });
+  }
+  return { cols, rows: outRows };
+}
+
+// Компанийн төрлөөс үл хамааран нийтлэг бичигддэг anchor labels
+const FIN_RATIO_PATTERNS = {
+  totalAssets:      /нийт\s*хөрөнгийн\s*дүн/i,
+  totalLiabilities: /өр\s*төлбөр(ийн)?\s*(нийт\s*)?дүн$/i,
+  equity:           /эздийн\s*өмчийн\s*дүн|эзэмшигчдийн\s*өмчийн\s*дүн/i,
+  revenue:          /борлуулалтын\s*орлого|даатгалын\s*хураамжийн\s*орлого|хүүгийн\s*(цэвэр\s*)?орлого/i,
+  netIncome:        /тайлант\s*үеийн\s*цэвэр\s*ашиг/i,
+};
+
+function finExtractRatios(periodJson) {
+  const bs = finNormalizeRows(periodJson.balance_sheet);
+  const is_ = finNormalizeRows(periodJson.income_statement);
+  const pick = (rows, re) => {
+    const hit = rows.find(r => re.test(r.label));
+    if (!hit) return null;
+    const v = hit.v2 != null ? hit.v2 : hit.v1;
+    return (typeof v === 'number') ? v : null;
+  };
+  return {
+    totalAssets:      pick(bs, FIN_RATIO_PATTERNS.totalAssets),
+    totalLiabilities: pick(bs, FIN_RATIO_PATTERNS.totalLiabilities),
+    equity:           pick(bs, FIN_RATIO_PATTERNS.equity),
+    revenue:          pick(is_, FIN_RATIO_PATTERNS.revenue),
+    netIncome:        pick(is_, FIN_RATIO_PATTERNS.netIncome),
+  };
+}
+
+async function loadFinancialsTab(sym) {
+  const body = document.getElementById('finBody');
+  body.innerHTML = '<div class="loading" style="height:160px"><div class="spinner"></div></div>';
+  const idx = await loadFinancialsIndex();
+  const periods = (idx[sym] || []).slice().sort();
+  if (!periods.length) {
+    body.innerHTML = '<div class="empty">Санхүүгийн тайлан одоогоор байхгүй байна</div>';
+    return;
+  }
+  if (!financialsCache[sym]) financialsCache[sym] = { periods, data: {} };
+  await Promise.all(periods.map(async p => {
+    if (financialsCache[sym].data[p]) return;
+    try {
+      const r = await fetch(`data/financials/${sym}/${p}.json`);
+      if (r.ok) financialsCache[sym].data[p] = await r.json();
+    } catch (e) {}
+  }));
+  if (!finState[sym]) finState[sym] = { period: periods[periods.length - 1], statement: 'balance_sheet' };
+  renderFinancials(sym);
+}
+
+function finSetPeriod(sym, period)   { finState[sym].period = period; renderFinancials(sym); }
+function finSetStatement(sym, stmt)  { finState[sym].statement = stmt; renderFinancials(sym); }
+
+function fmtFinNum(n) {
+  if (n == null || isNaN(n)) return '—';
+  const abs = Math.abs(n);
+  if (abs >= 1e9) return (n / 1e9).toFixed(2) + ' тэрбум';
+  if (abs >= 1e6) return (n / 1e6).toFixed(1) + ' сая';
+  return Number(n).toLocaleString('mn-MN');
+}
+
+function renderFinancials(sym) {
+  const st = finState[sym];
+  const cache = financialsCache[sym];
+  const periods = cache.periods;
+  const body = document.getElementById('finBody');
+  if (!periods.length) { body.innerHTML = '<div class="empty">Мэдээлэл байхгүй</div>'; return; }
+
+  const ratiosByPeriod = periods.map(p => ({
+    period: p, ...(cache.data[p] ? finExtractRatios(cache.data[p]) : {})
+  }));
+  const maxRev = Math.max(1, ...ratiosByPeriod.map(r => Math.abs(r.revenue || 0)));
+  const maxNi  = Math.max(1, ...ratiosByPeriod.map(r => Math.abs(r.netIncome || 0)));
+
+  let revBars = '', niBars = '';
+  ratiosByPeriod.forEach(r => {
+    const hRev = r.revenue   != null ? Math.max(4, Math.abs(r.revenue)   / maxRev * 130) : 4;
+    const hNi  = r.netIncome != null ? Math.max(4, Math.abs(r.netIncome) / maxNi  * 130) : 4;
+    const niColor = (r.netIncome || 0) >= 0 ? 'var(--green)' : 'var(--red)';
+    revBars += `<div class="fin-bar-col">
+      <div class="fin-bar-val">${fmtFinNum(r.revenue)}</div>
+      <div class="fin-bar" style="height:${hRev}px;background:var(--blue)"></div>
+      <div class="fin-bar-label">${periodLabel(r.period)}</div>
+    </div>`;
+    niBars += `<div class="fin-bar-col">
+      <div class="fin-bar-val">${fmtFinNum(r.netIncome)}</div>
+      <div class="fin-bar" style="height:${hNi}px;background:${niColor}"></div>
+      <div class="fin-bar-label">${periodLabel(r.period)}</div>
+    </div>`;
+  });
+
+  const latest = ratiosByPeriod[ratiosByPeriod.length - 1] || {};
+
+  const periodBtns = periods.map(p =>
+    `<button class="pb${st.period===p?' active':''}" onclick="finSetPeriod('${sym}','${p}')">${periodLabel(p)}</button>`
+  ).join('');
+
+  const periodJson = cache.data[st.period];
+  const availStatements = FIN_STATEMENTS.filter(s => periodJson && periodJson[s.key] && periodJson[s.key].length);
+  const subTabs = availStatements.map(s =>
+    `<button class="sub-tab${st.statement===s.key?' active':''}" onclick="finSetStatement('${sym}','${s.key}')">${s.label}</button>`
+  ).join('');
+
+  let tableHtml = '';
+  if (periodJson && st.statement === 'equity_changes') {
+    const eq = finNormalizeEquity(periodJson.equity_changes);
+    tableHtml = `<table class="hist-tbl"><thead><tr><th>Үзүүлэлт</th>${eq.cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>` +
+      eq.rows.map(r => `<tr><td>${r.label}</td>${r.values.map(v => `<td>${typeof v==='number'?fmtFinNum(v):(v||'—')}</td>`).join('')}</tr>`).join('') +
+      '</tbody></table>';
+  } else if (periodJson && periodJson[st.statement]) {
+    const rows = finNormalizeRows(periodJson[st.statement]);
+    const h1 = (rows.find(r=>r.k1)||{}).k1 || 'Эхний үлдэгдэл';
+    const h2 = (rows.find(r=>r.k2)||{}).k2 || 'Эцсийн үлдэгдэл';
+    tableHtml = `<table class="hist-tbl"><thead><tr><th>Код</th><th>Үзүүлэлт</th><th>${h1}</th><th>${h2}</th></tr></thead><tbody>` +
+      rows.map(r => {
+        const isBold = /дүн$/.test(r.label) && !/богино|урт/i.test(r.label);
+        return `<tr${isBold?' style="font-weight:700;background:var(--bg)"':''}>
+          <td>${r.code}</td><td>${r.label}</td>
+          <td>${typeof r.v1==='number'?fmtFinNum(r.v1):(r.v1||'—')}</td>
+          <td>${typeof r.v2==='number'?fmtFinNum(r.v2):(r.v2||'—')}</td>
+        </tr>`;
+      }).join('') + '</tbody></table>';
+  } else {
+    tableHtml = '<div class="empty">Энэ тайлан хугацаанд байхгүй байна</div>';
+  }
+
+  body.innerHTML = `
+    <div class="stats-grid" style="margin-bottom:14px">
+      <div class="stat-card c-blue"><div class="stat-lbl">Нийт хөрөнгө</div><div class="stat-val">${fmtFinNum(latest.totalAssets)}</div></div>
+      <div class="stat-card c-red"><div class="stat-lbl">Өр төлбөр</div><div class="stat-val">${fmtFinNum(latest.totalLiabilities)}</div></div>
+      <div class="stat-card c-green"><div class="stat-lbl">Эздийн өмч</div><div class="stat-val">${fmtFinNum(latest.equity)}</div></div>
+      <div class="stat-card c-amber"><div class="stat-lbl">Цэвэр ашиг</div><div class="stat-val ${(latest.netIncome||0)>=0?'up':'dn'}">${fmtFinNum(latest.netIncome)}</div></div>
+    </div>
+    <div class="own-grid" style="margin-bottom:14px">
+      <div class="fin-chart-card">
+        <div class="card-title" style="margin-bottom:10px">Борлуулалтын орлого</div>
+        <div class="fin-bar-wrap">${revBars}</div>
+      </div>
+      <div class="fin-chart-card">
+        <div class="card-title" style="margin-bottom:10px">Цэвэр ашиг</div>
+        <div class="fin-bar-wrap">${niBars}</div>
+      </div>
+    </div>
+    <div class="trade-card">
+      <div class="card-head" style="flex-wrap:wrap;gap:10px">
+        <span class="card-title">Тайлан</span>
+        <div class="period-btns">${periodBtns}</div>
+      </div>
+      <div class="th-filter-row" style="border-top:1px solid var(--border-lt)">
+        <div class="sub-tab-row">${subTabs}</div>
+      </div>
+      ${tableHtml}
+    </div>
+  `;
+}
 applyTheme(currentTheme);
 init();
 </script>
