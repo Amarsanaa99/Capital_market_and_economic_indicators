@@ -427,6 +427,12 @@ const UI_TEXT = {
     createdDate:'Founded', listedDate:'Listed on MSE', ceo:'CEO',
     employees:'Total Employees', phoneFax:'Phone / Fax', email:'Email', website:'Website',
     address:'Address', regNum:'Registration No.', certNum:'Certificate No.',
+    loadingTicker:'Loading...', selectCoShort:'Select a company',
+    ownStructTitle:'Ownership Structure', influentialTitle:'Key Shareholders', topOwnerTitle:'Largest Shareholder',
+    boardTitle:'Board Members', execTitle:'Executive Management', freeFloatLbl:'Free Float',
+    sharesUnit:'shares', historyRecords:'records',
+    numCol:'#', nameCol:'Name', pctCol:'Share', sharesCol:'Shares',
+    tradingDaysLbl:'trading days',
   }
 };
 function t(key) { return (UI_TEXT[currentLang] && UI_TEXT[currentLang][key]) || key; }
@@ -728,8 +734,8 @@ function renderTradeTableRows(rows, totalCount) {
     return;
   }
   let html = `<table class="hist-tbl"><thead><tr>
-    <th>№</th><th>Огноо</th><th>Нээлт</th><th>Хаалт</th>
-    <th>Дээд / Доод</th><th>Эзлэхүүн</th><th>Үнийн дүн</th><th>Хэлцэл</th>
+    <th>${t('num')}</th><th>${t('date')}</th><th>${t('open')}</th><th>${t('close')}</th>
+    <th>${t('highLowCol')}</th><th>${t('volume')}</th><th>${t('turnover')}</th><th>${t('tradesCol')}</th>
   </tr></thead><tbody>`;
   rows.forEach((r, i) => {
     const isUp = r.ClosingPrice >= r.OpeningPrice;
@@ -745,7 +751,7 @@ function renderTradeTableRows(rows, totalCount) {
   });
   html += '</tbody></table>';
   document.getElementById('tradeTable').innerHTML = html;
-  document.getElementById('tradeInfo2').textContent = rows.length + ' / ' + totalCount + ' арилжааны өдөр';
+  document.getElementById('tradeInfo2').textContent = rows.length + ' / ' + totalCount + ' ' + t('tradingDaysLbl');
 }
 
 const DEFAULT_TRADE_HIST_LIMIT = 50;
@@ -1070,50 +1076,47 @@ function renderOwnership(sym) {
       <div class="own-hist-toggle" onclick="const el=document.getElementById('ownHistBody_${sym}');el.style.display=el.style.display==='none'?'block':'none';">▾ Түүхэн өөрчлөлт харах (${history.length - 1} бичлэг)</div>
       <div id="ownHistBody_${sym}" style="display:none;border-top:1px solid var(--border-lt)">${histHtml}</div>`;
   }
-
   let boardRows = board.slice(0, 6).map(r =>
-    `<div class="own-mini-row"><span>${r['Нэр'] || ''}</span><span style="color:var(--text3)">${r['Албан тушаал'] || r['Гишүүнчлэл'] || ''}</span></div>`).join('');
-  if (!boardRows) boardRows = '<div class="empty">Мэдээлэл байхгүй</div>';
+    `<div class="own-mini-row"><span>${r['Нэр'] || ''}</span><span style="color:var(--text3)">${tf(r['Албан тушаал'] || r['Гишүүнчлэл'] || '')}</span></div>`).join('');
+  if (!boardRows) boardRows = `<div class="empty">${t('noInfoAvail')}</div>`;
 
   let officialRows = officials.slice(0, 6).map(r =>
-    `<div class="own-mini-row"><span>${r['Нэр'] || ''}</span><span style="color:var(--text3)">${r['Албан тушаал'] || ''}</span></div>`).join('');
-  if (!officialRows) officialRows = '<div class="empty">Мэдээлэл байхгүй</div>';
-
+    `<div class="own-mini-row"><span>${r['Нэр'] || ''}</span><span style="color:var(--text3)">${tf(r['Албан тушаал'] || '')}</span></div>`).join('');
+  if (!officialRows) officialRows = `<div class="empty">${t('noInfoAvail')}</div>`;
   body.innerHTML = `
     <div class="own-grid">
       <div class="own-card">
-        <div class="own-title"><span class="own-icon">${ICON_PIE}</span>Эзэмшлийн бүтэц</div>
+        <div class="own-title"><span class="own-icon">${ICON_PIE}</span>${t('ownStructTitle')}</div>
         <div style="display:flex;align-items:center;gap:18px;">
           <svg width="180" height="180" viewBox="0 0 180 180">
             <circle cx="90" cy="90" r="70" fill="none" stroke="var(--border-lt)" stroke-width="22"/>
             ${segments}
             <text x="90" y="84" text-anchor="middle" font-size="12" font-weight="700" fill="var(--text)">${fmtNum(totalShares)}</text>
-            <text x="90" y="101" text-anchor="middle" font-size="10" fill="var(--text3)">ширхэг</text>
+            <text x="90" y="101" text-anchor="middle" font-size="10" fill="var(--text3)">${t('sharesUnit')}</text>
           </svg>
           <div class="own-legend">${legend}</div>
         </div>
       </div>
       <div class="own-stats">
-        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_USERS}</span>Нөлөө бүхий эзэмшигчид</div><div class="stat-val">${list.length}</div><div class="stat-sub">${totalPct.toFixed(1)}%</div></div>
-        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_STAR}</span>Хамгийн том эзэмшигч</div><div class="stat-val">${parsePct(topHolder['Хувьцааны тоо']).toFixed(1)}%</div><div class="stat-sub">${topHolder['Нэр'] || ''}</div></div>
-        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_BOARD}</span>ТУЗ-ийн гишүүд</div><div class="stat-val">${board.length}</div></div>
-        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_BRIEFCASE}</span>Гүйцэтгэх удирдлага</div><div class="stat-val">${officials.length}</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_USERS}</span>${t('influentialTitle')}</div><div class="stat-val">${list.length}</div><div class="stat-sub">${totalPct.toFixed(1)}%</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_STAR}</span>${t('topOwnerTitle')}</div><div class="stat-val">${parsePct(topHolder['Хувьцааны тоо']).toFixed(1)}%</div><div class="stat-sub">${topHolder['Нэр'] || ''}</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_BOARD}</span>${t('boardTitle')}</div><div class="stat-val">${board.length}</div></div>
+        <div class="own-stat"><div class="stat-lbl" style="display:flex;align-items:center"><span class="own-icon" style="width:20px;height:20px;margin-right:6px">${ICON_BRIEFCASE}</span>${t('execTitle')}</div><div class="stat-val">${officials.length}</div></div>
       </div>
     </div>
 
     <div class="trade-card" style="margin-top:12px">
-      <div class="card-head"><span class="card-title" style="display:flex;align-items:center;font-size:12px"><span class="own-icon" style="width:22px;height:22px;margin-right:6px">${ICON_CROWN}</span>Нөлөө бүхий хувьцаа эзэмшигчид</span></div>
-      <table class="hist-tbl"><thead><tr><th>№</th><th>Нэр</th><th>Хувь</th><th>Ширхэг</th></tr></thead><tbody>${tableRows}</tbody></table>
+      <div class="card-head"><span class="card-title" style="display:flex;align-items:center;font-size:12px"><span class="own-icon" style="width:22px;height:22px;margin-right:6px">${ICON_CROWN}</span>${t('ownersTitle')}</span></div>
+      <table class="hist-tbl"><thead><tr><th>${t('numCol')}</th><th>${t('nameCol')}</th><th>${t('pctCol')}</th><th>${t('sharesCol')}</th></tr></thead><tbody>${tableRows}</tbody></table>
       ${historyToggle}
     </div>
-
     <div class="own-two-col">
       <div class="own-mini-card">
-        <div class="card-head"><span class="card-title">ТУЗ-ийн гишүүд</span></div>
+        <div class="card-head"><span class="card-title">${t('boardTitle')}</span></div>
         ${boardRows}
       </div>
       <div class="own-mini-card">
-        <div class="card-head"><span class="card-title">Гүйцэтгэх удирдлага</span></div>
+        <div class="card-head"><span class="card-title">${t('execTitle')}</span></div>
         ${officialRows}
       </div>
     </div>
